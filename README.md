@@ -1,2 +1,0 @@
-# RBaseX
-BaseX R Client
