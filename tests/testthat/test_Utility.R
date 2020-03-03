@@ -6,8 +6,10 @@ test_that("Result is converted to frame", {
                                   "for $i in 1 to 3 return ( element { $name } { $i },  $i)"))
   Query_1$queryObject$Bind("$name", "number")
   re <- Query_1$queryObject$ExecuteQuery()
-  res <- result2tibble(re, 2)
-  expect_equal(nrow(res), 3)
+  res_m <- result2matrix(re, 2)
+  res_f <- result2frame(re, 2)
+  res_t <- result2tibble(re, 2)
+  expect_equal(nrow(res_f), 3)
 
   # Cleanup
   Query_1$queryObject$Close()

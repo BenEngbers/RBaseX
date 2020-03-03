@@ -5,10 +5,10 @@
 #' @param input Query-result
 #' @param cols Number of columns
 #'
-#' @description Converts the query-result to a frame. The query-result is a list.
+#' @description Converts the query-result to a tibble. The query-result is a list.
 #'     'cols' is needed to determine the number of columns.
 #'
 #' @export
 result2tibble <- function(input, cols) {
-  return(as_tibble(result2frame(input, cols)))
+  return(as_tibble(result2matrix(input, cols)))
 }

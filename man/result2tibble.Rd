@@ -15,6 +15,6 @@ result2tibble(input, cols)
 Return result from query as tibble
 }
 \description{
-Converts the query-result to a frame. The query-result is a list.
+Converts the query-result to a tibble. The query-result is a list.
     'cols' is needed to determine the number of columns.
 }

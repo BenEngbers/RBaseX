@@ -2,7 +2,7 @@
 #'
 #' @description Al methods that are used by BasexClient and QueryClass
 #'
-#' @exporte
+#' @export
 SocketClass <- R6Class(
   "SocketClass",
   portable = TRUE,
@@ -63,7 +63,7 @@ SocketClass <- R6Class(
         output <- c(output, rd)
       }
       # The 'Full'-method embeds a \0 in the output
-      if (!bin) ret <- strip_nul(output) %>% rawToChar()
+      if (!bin) ret <- strip_CRLF_NUL(output) %>% rawToChar()
       else ret <- output
       return(ret)
       },
@@ -102,10 +102,18 @@ SocketClass <- R6Class(
   )
 )
 
-strip_nul <- function(cache) {
-  nul <- which(0 == cache)
-  if (length(nul) > 0) cache[nul] <- charToRaw(" ")
-  return(cache)
+strip_CRLF_NUL <- function(cache_in) {
+  nul <- which(0  == cache_in); if (length(nul) > 0) cache_in[nul] <- charToRaw(" ")
+  CR  <- which(13 == cache_in); if (length(CR) > 0) cache_in <- cache_in[-CR]
+  return(cache_in)
 }
 
-
+strip_err <- function(cache_in) {
+  nul <- which(0 == cache_in)
+  CR  <- which(13 == 0)
+  if (length(nul) > 0) cache_in[nul] <- charToRaw(" ")
+  if (length(CR) > 0) {
+    cache_in <- cache_in[-CR]
+  }
+  return(cache_in)
+}

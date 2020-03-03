@@ -10,7 +10,8 @@
 #'
 #' @export
 result2frame <- function(input, cols) {
-  ma <- matrix(unlist(input[1]), ncol=cols, byrow=TRUE)
-  colnames(ma) <- colnames(ma, do.NULL = FALSE, prefix = "col")
-  return(as.data.frame(ma))
+  # ma <- matrix(unlist(input[1]), ncol=cols, byrow=TRUE)
+  # colnames(ma) <- colnames(ma, do.NULL = FALSE, prefix = "col")
+  # ma <- result2matrix(input, cols)
+  return(as.data.frame(result2matrix(input, cols)))
 }

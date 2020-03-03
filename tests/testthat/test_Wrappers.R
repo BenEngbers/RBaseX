@@ -49,7 +49,7 @@ test_that("'Full' and 'More' output should differ", {
   while (More(Query_1)) {
     iterResult <- c(iterResult, Next(Query_1))
   }
-  expect_length(iterResult, 4)
+  expect_length(iterResult, 6)
   # Cleanup
   Close(Query_1)
   rm(Session)
