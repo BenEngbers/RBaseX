@@ -1,6 +1,7 @@
 #' SetSuccess
 #'
 #' @description Assign a new value to session$Success
+#'
 #' @param session BasexClient instance-ID
 #' @param success Success-indicator for the last operation on the socket
 #'

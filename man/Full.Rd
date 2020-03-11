@@ -12,6 +12,7 @@ Full(query_obj)
 \description{
 Executes a query and returns a vector with all resulting items as strings,
     prefixed by the 'XDM' (Xpath Data Model) Meta Data <https://www.xdm.org/>.
+    Meta Data and results are seaparated by a '|'.
 }
 \examples{
 \dontrun{

@@ -146,17 +146,6 @@ BasexClient <- R6Class(
     Success = NULL,
     Intercept = FALSE,
     Intercept_Old = NULL,
-    # QueryList = c(),
-
-    close_query_list = function() {
-      browser()
-      for (tel in 1:length(private$QueryList)) {
-        self$private$QueryList[tel]$Close()
-      }
-    },
-    add_query = function(QueryObject) {
-      private$QueryList <- c(private$QueryList, QueryObject)
-    },
     default_pattern = function(Caller, path, input) {
       if (missing(path) || missing(input)) {
         stop("'path' and/or 'input' are missing")
@@ -168,6 +157,7 @@ BasexClient <- R6Class(
                "Store"   =  writeBin(as.raw(0x0D), private$sock$get_socket())
         )
         private$sock$void_send(path)
+        # browser()
         input <- input_to_raw(input)
         private$sock$void_send(input)
         # The server responds by sending {info}, 0x00 and a status-byte

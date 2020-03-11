@@ -12,9 +12,10 @@
 #'
 #' @description Adds a new resource to the opened database.
 #'
-#' @details The 'input' can be a length-1 character vector or a stream.
-#'     The utility-function \emph{input_to_raw} can be used to convert
-#'     a file or an URL to a stream.
+#' @details The 'input' can be a length-1 character vector which describes an element,
+#'     a file-descriptor, an URL or a stream.
+#'     The utility-function \emph{input_to_raw} can be used to convert an arbitrary
+#'     character vector to a stream.
 #'
 #' @examples
 #' \dontrun{

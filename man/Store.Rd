@@ -24,8 +24,7 @@ A list with two items
 Stores a binary resource in the opened database.
 }
 \details{
-Replaces a resource with the specified input. Use the database-command \emph{retrieve}
-to retrieve the resource.
+Use the database-command \emph{retrieve} to retrieve the resource.
 }
 \examples{
 \dontrun{
