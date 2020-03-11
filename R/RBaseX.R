@@ -14,7 +14,7 @@
 #' @importFrom openssl md5
 #'
 #' @details 'RBaseX' was developed using R6. For most of the public methods in the R6-classes, wrapper-functions
-#'     were created. The differences in performance between R6-methods and wrapper-functions are minimal and
+#'     are created. The differences in performance between R6-methods and wrapper-functions are minimal and
 #'     slightly in advantage of the R6-version.
 #'
 #'     It is easy to use the R6-calls instead of the wrapper-functions.

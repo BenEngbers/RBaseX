@@ -1,6 +1,7 @@
 #' SetIntercept
 #'
 #' @description Assign a new value to session$Intercept
+#'
 #' @param session BasexClient instance-ID
 #' @param intercept New Intercept value
 #'

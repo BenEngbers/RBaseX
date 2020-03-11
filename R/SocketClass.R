@@ -63,7 +63,7 @@ SocketClass <- R6Class(
         output <- c(output, rd)
       }
       # The 'Full'-method embeds a \0 in the output
-      if (!bin) ret <- strip_CRLF_NUL(output) %>% rawToChar()
+      if (!bin) ret <- strip_CR_NUL(output) %>% rawToChar()
       else ret <- output
       return(ret)
       },
@@ -77,7 +77,7 @@ SocketClass <- R6Class(
     CreateSocket = function(host, port = 1984L, username, password) {
       tryCatch(
         {private$conn <- socketConnection(host = "localhost", port,
-          open = "w+b", server = FALSE, blocking = TRUE, encoding = "utf-8")
+          open = "w+b", server = FALSE, blocking = TRUE, encoding = "utf-8", timeout = 1)
         },
         error = function(e) {
           stop("Cannot open the connection")}
@@ -102,18 +102,8 @@ SocketClass <- R6Class(
   )
 )
 
-strip_CRLF_NUL <- function(cache_in) {
-  nul <- which(0  == cache_in); if (length(nul) > 0) cache_in[nul] <- charToRaw(" ")
+strip_CR_NUL <- function(cache_in) {
+  nul <- which(0  == cache_in); if (length(nul) > 0) cache_in[nul] <- charToRaw("|")
   CR  <- which(13 == cache_in); if (length(CR) > 0) cache_in <- cache_in[-CR]
-  return(cache_in)
-}
-
-strip_err <- function(cache_in) {
-  nul <- which(0 == cache_in)
-  CR  <- which(13 == 0)
-  if (length(nul) > 0) cache_in[nul] <- charToRaw(" ")
-  if (length(CR) > 0) {
-    cache_in <- cache_in[-CR]
-  }
   return(cache_in)
 }

@@ -7,7 +7,7 @@ test_that("Session, Database and QueryObjects are created and can be used", {
   expect_error(Query(Session))
   SetIntercept(Session, TRUE)
   expect_true(GetIntercept(Session))
-  Execute(Session, "Open TestOpen")             # Ensure that TestOpen does not exist
+  Execute(Session, "Open TestOpen")        # Ensure that TestOpen does not exist
   if (GetSuccess(Session)) {
     Execute(Session,"Close")
     Execute(Session,"DROP DB TestOpen")
@@ -23,6 +23,7 @@ test_that("Session, Database and QueryObjects are created and can be used", {
   expect_true(GetSuccess(Session))
   Execute(Session, "Close")
   Session$restore_intercept()             # should be FALSE
+
   RestoreIntercept(Session)
   expect_false(GetIntercept(Session))
   SetIntercept(Session, TRUE)
@@ -32,6 +33,9 @@ test_that("Session, Database and QueryObjects are created and can be used", {
   expect_equal(GetSuccess(Session), TRUE)
   Query_3 <- Query(Session, "for $i in 1 to 2 return $i")
   expect_equal(GetSuccess(Session), TRUE)
+
+  Execute(Session,"DROP DB TestOpen")
+
   # Cleanup
   Close(Query_2)
   Close(Query_3)
@@ -111,21 +115,40 @@ test_that("Binary content is handled correctly", {
   rm(Session)
 })
 
-test_that("Add/Replace is handled", {
-  skip_if_offline()
+test_that("Add and Add/Replace is handled", {
   skip_unless_socket_available()
+  skip_if_offline()
   Session <- BasexClient$new("localhost", 1984L, username = "admin", password = "admin")
 
   Execute(Session, "Check TestDB")
+  SetIntercept(Session, TRUE)
+  Execute(Session, "delete Add_Char")
+  Execute(Session, "delete Add_XML")
+  Execute(Session, "delete Add_URL")
+  RestoreIntercept(Session)
 
-  Path <- "Add_Rep"
-  Add(Session, path = Path, "<xml>Add</xml>")
+  # Add a length-1 character vector
+  Path <- "Add_Char"
+  Add(Session, path = Path, "<xml>Add Char</xml>")
+
+  # Add a file
+  Path <- "Add_XML"
+  XML_file <- system.file("extdata", "Articles.xml", package="RBaseX")
+  Add(Session, path = Path, XML_file)
+
+  # Add a link
+  Path <- "Add_URL"
   Simple <- input_to_raw("https://raw.githubusercontent.com/BaseXdb/basex/master/basex-api/src/test/resources/first.xml")
   Add(Session, path = Path, Simple)
+
   # Add/Replace ----
   Rep <- "<x>Hi Friends!</x>"
-  Replace(Session, path = Path, Rep)
-  expect_output(str(Execute(Session, "xquery collection('TestDB')")$result), "<x>Hi Friends!</x>")
+  Replace(Session, Path, Rep)
+
+  # Check results
+  result <- Session$Execute("xquery db:list('TestDB')")[[1]]
+  expect_equal(length(Session$Execute("xquery db:list('TestDB')")[[1]][[1]]), 7)
+  expect_equal(Session$Execute("xquery doc('TestDB/Add_URL')/x/text()")[[1]][[1]], "Hi Friends!")
   # Cleanup
   Execute(Session, "Close")
   rm(Session)

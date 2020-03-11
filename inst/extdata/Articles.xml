@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="./Articles.xsl"?><article fname="19990101_xsl">
+  <title>XML Style Sheets</title>
+  <date>January 1999</date>
+  <copyright>1999, Benoit Marchal</copyright>
+  <abstract>Style sheets add flexibility to document viewing.</abstract>
+  <keywords>XML, XSL, style sheet, publishing, web</keywords>
+  <section>
+    <p>Send comments and suggestions to <url protocol="mailto">bmarchal@pineapplesoft.com</url>.</p>
+  </section>
+  <section>
+    <title>Styling</title>
+    <p>Style sheets are inherited from SGML, an XML ancestor. Style sheets originated in publishing and document management applications. XSL is XML's standard style sheet, see <url>http://www.w3.org/Style</url>.</p>
+  </section>
+  <section>
+    <title>How XSL Works</title>
+    <p>An XSL style sheet is a set of rules where each rule specifies how to format certain elements in the document. To continue the example from the previous section, the style sheets have rules for title, paragraphs and keywords.</p>
+    <p>With XSL, these rules are powerful enough not only to format the document but also to reorganize it, e.g. by moving the title to the front page or extracting the list of keywords. This can lead to exciting applications of XSL outside the realm of traditional publishing. For example, XSL can be used to convert documents between the company-specific markup and a standard one.</p>
+  </section>
+  <section>
+    <title>The Added Flexibility of Style Sheets</title>
+    <p>Style sheets are separated from documents. Therefore one document can have more than one style sheet and, conversely, one style sheet can be shared amongst several documents.</p>
+    <p>This means that a document can be rendered differently depending on the media or the audience. For example, a "managerial" style sheet may present a summary view of a document that highlights key elements but a "clerical" style sheet may display more detailed information.</p>
+  </section>
+</article>

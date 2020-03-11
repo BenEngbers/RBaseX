@@ -24,9 +24,12 @@ input_to_raw <- function(input, addZero = FALSE) {
               toread <- file(input, "rb")
               raw_input <- readBin(toread, what = "raw", size = 1, n = finfo$size)
               close(toread)
-            }  else if (url.exists(input)) {            # URL
-              get <- getURL(input)
-              raw_input <- charToRaw(get)}
+            } else if (url.exists(input)) {            # URL
+              get_URL <- getURL(input)
+              raw_input <- charToRaw(get_URL)
+              raw_length <- length(raw_input)
+              if (raw_input[raw_length] == "0a") raw_input <- raw_input[-raw_length]
+              }
             else {                                      # String
               raw_input <- charToRaw(input)
             }
