@@ -20,6 +20,7 @@ Al methods that are used by BasexClient and QueryClass
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
 Initialize a new socket
 \subsection{Usage}{
@@ -36,6 +37,7 @@ Initialize a new socket
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-finalize"></a>}}
+\if{latex}{\out{\hypertarget{method-finalize}{}}}
 \subsection{Method \code{finalize()}}{
 When releasing the session-object, close the socketConnection
 \subsection{Usage}{
@@ -45,6 +47,7 @@ When releasing the session-object, close the socketConnection
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-bool_test_sock"></a>}}
+\if{latex}{\out{\hypertarget{method-bool_test_sock}{}}}
 \subsection{Method \code{bool_test_sock()}}{
 Return a boolean that indicates the result from the last action on the socket
 \subsection{Usage}{
@@ -61,6 +64,7 @@ Return a boolean that indicates the result from the last action on the socket
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-void_send"></a>}}
+\if{latex}{\out{\hypertarget{method-void_send}{}}}
 \subsection{Method \code{void_send()}}{
 Send input to the socket
 \subsection{Usage}{
@@ -81,6 +85,7 @@ Input is either a string or data that is read from a stream
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-str_receive"></a>}}
+\if{latex}{\out{\hypertarget{method-str_receive}{}}}
 \subsection{Method \code{str_receive()}}{
 Read a string from a stream
 \subsection{Usage}{
@@ -103,6 +108,7 @@ This method is not intented to be called direct
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_socket"></a>}}
+\if{latex}{\out{\hypertarget{method-get_socket}{}}}
 \subsection{Method \code{get_socket()}}{
 Get socket-ID
 \subsection{Usage}{
@@ -112,6 +118,7 @@ Get socket-ID
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

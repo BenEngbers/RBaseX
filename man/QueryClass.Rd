@@ -26,6 +26,7 @@ The client can be used in 'standard' mode and in 'query' mode.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
 Initialize a new instance from QueryClass
 \subsection{Usage}{
@@ -53,6 +54,7 @@ QueryClass-instances can only be created by calling the 'Query'-method from
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Bind"></a>}}
+\if{latex}{\out{\hypertarget{method-Bind}{}}}
 \subsection{Method \code{Bind()}}{
 Binds a value to a variable.
 \subsection{Usage}{
@@ -75,6 +77,7 @@ When using the primitive functions, this function can be chained.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Context"></a>}}
+\if{latex}{\out{\hypertarget{method-Context}{}}}
 \subsection{Method \code{Context()}}{
 Binds a value to the context. The type will be ignored if the string is empty.
 \subsection{Usage}{
@@ -97,6 +100,7 @@ When using the primitive functions, this function can be chained.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Close"></a>}}
+\if{latex}{\out{\hypertarget{method-Close}{}}}
 \subsection{Method \code{Close()}}{
 Closes and unregisters the query with the specified ID
 \subsection{Usage}{
@@ -110,6 +114,7 @@ When using the primitive functions, this function can be chained.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-ExecuteQuery"></a>}}
+\if{latex}{\out{\hypertarget{method-ExecuteQuery}{}}}
 \subsection{Method \code{ExecuteQuery()}}{
 Executes a query.
 \subsection{Usage}{
@@ -119,6 +124,7 @@ Executes a query.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Info"></a>}}
+\if{latex}{\out{\hypertarget{method-Info}{}}}
 \subsection{Method \code{Info()}}{
 Returns a string with query compilation and profiling info.
 \subsection{Usage}{
@@ -128,6 +134,7 @@ Returns a string with query compilation and profiling info.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Options"></a>}}
+\if{latex}{\out{\hypertarget{method-Options}{}}}
 \subsection{Method \code{Options()}}{
 Returns a string with all query serialization parameters, which
     can e.g. be assigned to the serializer option.
@@ -138,6 +145,7 @@ Returns a string with all query serialization parameters, which
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Updating"></a>}}
+\if{latex}{\out{\hypertarget{method-Updating}{}}}
 \subsection{Method \code{Updating()}}{
 Check if the query contains updating expressions.
 \subsection{Usage}{
@@ -147,6 +155,7 @@ Check if the query contains updating expressions.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-More"></a>}}
+\if{latex}{\out{\hypertarget{method-More}{}}}
 \subsection{Method \code{More()}}{
 Indicates if there are any other results in the query-result.
 \subsection{Usage}{
@@ -156,6 +165,7 @@ Indicates if there are any other results in the query-result.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Next"></a>}}
+\if{latex}{\out{\hypertarget{method-Next}{}}}
 \subsection{Method \code{Next()}}{
 Returns the next result when iterating over a query
 \subsection{Usage}{
@@ -165,6 +175,7 @@ Returns the next result when iterating over a query
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Full"></a>}}
+\if{latex}{\out{\hypertarget{method-Full}{}}}
 \subsection{Method \code{Full()}}{
 Executes a query and returns a vector with all resulting items as strings,
     prefixed by the 'XDM' (Xpath Data Model) Meta Data <https://www.xdm.org/>.
@@ -175,6 +186,7 @@ Executes a query and returns a vector with all resulting items as strings,
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

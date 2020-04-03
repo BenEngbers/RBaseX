@@ -11,6 +11,7 @@
 #' @import RCurl
 #' @import stringr
 #' @import tibble
+#' @importFrom data.table rbindlist
 #' @importFrom openssl md5
 #'
 #' @details 'RBaseX' was developed using R6. For most of the public methods in the R6-classes, wrapper-functions

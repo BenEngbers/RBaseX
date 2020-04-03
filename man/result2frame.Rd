@@ -4,7 +4,7 @@
 \alias{result2frame}
 \title{result2frame}
 \usage{
-result2frame(input, cols)
+result2frame(...)
 }
 \arguments{
 \item{input}{Query-result}
@@ -15,6 +15,6 @@ result2frame(input, cols)
 Return result from query as dataframe
 }
 \description{
-Converts the query-result to a frame. The query-result is a list.
-    'cols' is needed to determine the number of columns.
+Converts the query-result to a frame. The query-result is either a list (sequence) or an array.
+    If it is a list, 'cols' is needed to determine the number of columns.
 }

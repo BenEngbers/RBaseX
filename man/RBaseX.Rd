@@ -57,6 +57,7 @@ The client can be used in 'standard' mode and in 'query' mode.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
 \subsection{Method \code{new()}}{
 Initialize a new client-session
 \subsection{Usage}{
@@ -73,6 +74,7 @@ Initialize a new client-session
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Execute"></a>}}
+\if{latex}{\out{\hypertarget{method-Execute}{}}}
 \subsection{Method \code{Execute()}}{
 Execute a command
 \subsection{Usage}{
@@ -93,6 +95,7 @@ For a list of database commands see \url{http://docs.basex.org/wiki/Commands}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Query"></a>}}
+\if{latex}{\out{\hypertarget{method-Query}{}}}
 \subsection{Method \code{Query()}}{
 Create a new query-object
 \subsection{Usage}{
@@ -117,6 +120,7 @@ ID for the created query-object
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Add"></a>}}
+\if{latex}{\out{\hypertarget{method-Add}{}}}
 \subsection{Method \code{Add()}}{
 Add a new resouce at the specified path
 \subsection{Usage}{
@@ -135,6 +139,7 @@ Add a new resouce at the specified path
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Create"></a>}}
+\if{latex}{\out{\hypertarget{method-Create}{}}}
 \subsection{Method \code{Create()}}{
 Create a new database
 \subsection{Usage}{
@@ -157,6 +162,7 @@ Initial content can be offered as string, URL or file.
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Replace"></a>}}
+\if{latex}{\out{\hypertarget{method-Replace}{}}}
 \subsection{Method \code{Replace()}}{
 Replace resource, adressed by path
 \subsection{Usage}{
@@ -175,6 +181,7 @@ Replace resource, adressed by path
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Store"></a>}}
+\if{latex}{\out{\hypertarget{method-Store}{}}}
 \subsection{Method \code{Store()}}{
 Store binary content
 \subsection{Usage}{
@@ -197,6 +204,7 @@ Binary content can be retrieved by executing a retrieve-command
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_intercept"></a>}}
+\if{latex}{\out{\hypertarget{method-set_intercept}{}}}
 \subsection{Method \code{set_intercept()}}{
 Toggles between using the ´success'-field, returned by the
     Execute-command or using regular error-handling (try-catch).
@@ -218,6 +226,7 @@ sgfdsffdsh
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-restore_intercept"></a>}}
+\if{latex}{\out{\hypertarget{method-restore_intercept}{}}}
 \subsection{Method \code{restore_intercept()}}{
 Restore the Intercept Toggles to the original value
 \subsection{Usage}{
@@ -227,6 +236,7 @@ Restore the Intercept Toggles to the original value
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_intercept"></a>}}
+\if{latex}{\out{\hypertarget{method-get_intercept}{}}}
 \subsection{Method \code{get_intercept()}}{
 Get current Intercept
 \subsection{Usage}{
@@ -236,6 +246,7 @@ Get current Intercept
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_socket"></a>}}
+\if{latex}{\out{\hypertarget{method-get_socket}{}}}
 \subsection{Method \code{get_socket()}}{
 Get the socket-ID
 \subsection{Usage}{
@@ -248,6 +259,7 @@ Socket-ID,
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_success"></a>}}
+\if{latex}{\out{\hypertarget{method-set_success}{}}}
 \subsection{Method \code{set_success()}}{
 Set the status success-from the last operation on the socket
 \subsection{Usage}{
@@ -268,6 +280,7 @@ This function is intended to be used by instances from the QueryClass
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-get_success"></a>}}
+\if{latex}{\out{\hypertarget{method-get_success}{}}}
 \subsection{Method \code{get_success()}}{
 Get the status success-from the last operation on the socket
 \subsection{Usage}{
@@ -280,6 +293,7 @@ Boolean,
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{
