@@ -2,7 +2,7 @@ Package: RBaseX
 Type: Package
 Title: 'BaseX' Client
 Version: 0.3.0
-Date: 2020-04-03
+Date: 2020-04-20
 Authors@R: person("Ben","Engbers", email = "Ben.Engbers@Be-Logical.nl", role = c("aut","cre"))
 Description: 'BaseX' <http://basex.org> is a XML database engine and a compliant 'XQuery 3.1' processor with full support of 'W3C Update Facility'. This package is a full client-implementation of the client/server protocol for 'BaseX' and provides functionalities to create, manipulate and query on XML-data. 
 License: MIT + file LICENSE

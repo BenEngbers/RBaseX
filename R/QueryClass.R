@@ -19,7 +19,7 @@ QueryClass <- R6Class(
       private$parent <- Parent
       private$sock <- Parent$get_socket()
       out_stream <- private$sock$get_socket()
-      writeBin(as.raw(0x00), out_stream)
+      private$sock$write_Byte(as.raw(0x00))
       private$sock$void_send(query)
       private$raw_id <- charToRaw(private$sock$str_receive()) %>% append(0) %>% as.raw()
     },
@@ -31,7 +31,48 @@ QueryClass <- R6Class(
     Bind = function(...) {
       socket <- private$sock$get_socket()
       private$write_code_ID(0x03)
-      writeBin(Binding(list(...)), socket)
+
+      arguments <- list(...)
+      name <-  arguments[[1]]
+      value <- arguments[[2]]
+      argCnt <- length(arguments)
+
+      private$sock$void_send(name)
+      if (argCnt == 2) {
+        if (is.character(value)) {                        # single name/value tupple
+          private$sock$void_send(value)
+          private$sock$void_send("")
+        } else {                                          # bind name to sequence
+          values <- raw(0)
+          for (i in 1:length(value)) {
+            values <- c(values, charToRaw(value[[i]]))
+            values <- c(values, c(0x01))
+          }
+          values <- values[-length(values)]               # Remove last 0x01
+          values %<>% as.raw()
+          private$sock$void_send(values)                  # Send the values
+          private$sock$void_send("")                      # Send the types
+        }
+      } else {
+        type <- arguments[[3]]
+        if (is.character(value) && is.character(type)) {  # single name/value/type tupple
+          private$sock$void_send(value)
+          private$sock$void_send(type)
+        } else {                                          # bind name to sequence values and types
+          values <- raw(0)
+          for (i in 1:length(value)) {
+            values <- c(values, charToRaw(value[[i]]))
+            values <- c(values, c(0x02))
+            values <- c(values, charToRaw(type[[i]]))
+            values <- c(values, c(0x01))
+          }
+          values <- values[-length(values)]               # Remove last 0x01
+          values %<>% as.raw()
+          private$sock$void_send(values)                  # Send the values
+          private$sock$void_send("")                      # Send the types
+        }
+      }
+
       private$req_result <- private$sock$str_receive()
 
       success <- private$parent$get_socket()$bool_test_sock()
@@ -47,18 +88,14 @@ QueryClass <- R6Class(
     #' @param value Value that should be boud to the context
     #' @param type The type will be ignored when the string is empty
     Context = function(value, type) {
-      if (missing(type)) type <- ""
       socket <- private$sock$get_socket()
       private$write_code_ID(0x0E)
-      cont_info <- charToRaw(value) %>% append(0) %>% as.raw()
-      if (type == "") {
-        cont_info %<>% append(0x00) %>% as.raw()
-      } else {
-        cont_info %<>% append(charToRaw(type)) %>% append(0x00) %>% as.raw()
-      }
-      writeBin(cont_info, socket)
-      private$req_result <- private$sock$str_receive()
+      private$sock$void_send(value)
+      if (missing(type)) private$sock$write_Byte(as.raw(0x00))
+      else
+        private$sock$void_send(type)
 
+      private$req_result <- private$sock$str_receive()
       success <- private$parent$get_socket()$bool_test_sock()
       private$parent$set_success(success)
       if (success || (!success && private$parent$get_intercept()))
@@ -103,10 +140,9 @@ QueryClass <- R6Class(
     #' @description Indicates if there are any other results in the query-result.
     More = function() {
       if (is.null(private$cache)) { # The cache has to be filled
-        in_stream <- private$sock$get_socket()
         private$write_code_ID(0x04)
         cache <- c()
-        while ((rd <- readBin(in_stream, what = "raw", n =1)) > 0) {
+        while ((rd<- private$sock$read_Byte()) > 0) {
           cache <- c(cache, as.character(rd))
           cache <- c(cache, private$sock$str_receive())
         }
@@ -132,10 +168,9 @@ QueryClass <- R6Class(
     #' @description Executes a query and returns a vector with all resulting items as strings,
     #'     prefixed by the 'XDM' (Xpath Data Model) Meta Data <https://www.xdm.org/>.
     Full = function() {
-      in_stream <- out_stream <- private$sock$get_socket()
       private$write_code_ID(0x1F)
       cache <- c()
-      while ((rd <- readBin(in_stream, what = "raw", n =1)) > 0) {
+      while ((rd <- private$sock$read_Byte()) > 0) {
         cache <- c(cache, as.character(rd))
         add_cache <- private$sock$str_receive()
         cache <- c(cache, add_cache)
@@ -154,18 +189,9 @@ QueryClass <- R6Class(
     pos = NULL,
     req_result = NULL,
     write_code_ID = function(id_code) {
-      out_stream <- private$sock$get_socket()
-      writeBin(as.raw(id_code), out_stream)
-      writeBin(private$raw_id, out_stream)},
-    receive_more = function(input, output) {
-      if (missing(input)) input   <- private$get_sock()
-      if (missing(output)) output <- raw(0)
-      while ((rd <- readBin(input, what = "raw", n =1)) > 0) {
-        if (rd == 0xff) next
-        output <- c(output, rd)
-      }
-      ret <- rawToChar(output)
-      return(ret)},
+      private$sock$write_Byte(as.raw(id_code))
+      private$sock$write_Byte(private$raw_id)
+      },
     clean = function(input) {
       if (input == "") return(input)
       else {
@@ -195,32 +221,3 @@ QueryClass <- R6Class(
     }
   )
 )
-
-Binding <- function(...) {
-  arguments <- list(...)[[1]]
-  name <- arguments[[1]]
-  vals <- arguments[[2]]
-  argCnt <- length(arguments)
-
-  retour <- charToRaw(name) %>% append(0) %>% as.raw()
-  if (argCnt == 3) {                                        # Name, value and type
-    retour %<>% append(charToRaw(vals)) %>% append(0x00) %>%
-      append(charToRaw(arguments[[3]])) %>% as.raw()
-  } else if (is.vector(vals)){                                # Name, list of values
-    valLength <- length(vals)
-    for (i in 1:length(vals)) {
-      retour %<>% append(charToRaw(vals[[i]][[1]]))
-      if (length(vals[[i]]) ==2) {
-        retour %<>% append(0x02) %<>% as.raw() %<>%
-          append(charToRaw(vals[[i]][[2]])) %<>% as.raw()
-      }
-      if (i < valLength) retour %<>% append(0x01) %<>% as.raw() else
-        retour %<>% append(0x00) %<>% as.raw()
-    }
-  } else {                                                  # Name, value
-    retour %<>% append(charToRaw(vals)) %>% append(0x00) %>%
-      append(charToRaw("")) %>% as.raw()
-  }
-  retour %<>% append(0x00) %>% as.raw()
-  return(retour)
-}

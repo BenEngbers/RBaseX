@@ -85,16 +85,49 @@ test_that("Binding and Context function", {
   skip_unless_socket_available()
   Session <- BasexClient$new("localhost", 1984L, username = "admin", password = "admin")
 
-  Q_txt <- "declare variable $name external; for $i in 1 to 3 return element { $name } { $i }"
-  Query_1 <- Query(Session, Q_txt)
+  Query_1 <- Query(Session,
+                   "declare variable $name external; for $i in 1 to 2 return element { $name } { $i }")
   Bind(Query_1, "$name", "number")
-  expect_output(str(Execute(Query_1)), '"<number>1</number>" "<number>2</number>" "<number>3</number>"')
+  expect_output(str(Execute(Query_1)), '"<number>1</number>" "<number>2</number>"')
+  Query_2 <- Query(Session,
+                   "declare variable $name external; for $i in 3 to 4 return element { $name } { $i }")
+  Bind(Query_2, "$name", "number", "xs:string")
+  expect_output(str(Execute(Query_2)), '"<number>3</number>" "<number>4</number>"')
+
+  Query_3 <- Query(Session,
+                   "declare variable $name external;
+    for $t in collection('TestDB/Books')/book
+    where $t/@author = $name
+    return $t/@title/string()")
+  Bind(Query_3, "$name", list("Walmsley", "Wickham"))
+  expect_output(str(Execute(Query_3)), '"XQuery" "Advanced R"')
+
+  Query_4 <- Query(Session,
+                   "declare variable $name external;
+    for $t in collection('TestDB/Books')/book
+    where $t/@author = $name
+    return $t/@title/string()")
+  Bind(Query_4, "$name", list("Walmsley", "Wickham"), list("xs:string", "xs:string"))
+  expect_output(str(Execute(Query_4)), '"XQuery" "Advanced R"')
 
   ctxt_query <- Query(Session, "for $t in .//text() return string-length($t)")
   ctxt_txt   <- paste0("<xml>", "<txt>Hi</txt>", "<txt>World</txt>", "</xml>")
   Context(ctxt_query, ctxt_txt, type = "document-node()")
   expect_output(str(Execute(ctxt_query)), '"2" "5"')
-  # Cleanup
+
+  # book_txt <- paste0("<books>",
+  #                    "<book title = 'XQuery' author = 'Walmsley'/>",
+  #                    "<book title = 'Advanced R' author = 'Wickham'/>",
+  #                    "</books>")
+  # Books  <- paste0("<books>",
+  #                    "<book title = 'XQuery' author = 'Walmsley'/>",
+  #                    "<book title = 'Advanced R' author = 'Wickham'/>",
+  #                    "</books>")
+  # Add(Session, path = "Books", Books)
+
+
+
+    # Cleanup
   Close(Query_1)
   Close(ctxt_query)
   rm(Session)
@@ -147,7 +180,7 @@ test_that("Add and Add/Replace is handled", {
 
   # Check results
   result <- Session$Execute("xquery db:list('TestDB')")[[1]]
-  expect_equal(length(Session$Execute("xquery db:list('TestDB')")[[1]][[1]]), 7)
+  expect_equal(length(Session$Execute("xquery db:list('TestDB')")[[1]][[1]]), 8)
   expect_equal(Session$Execute("xquery doc('TestDB/Add_URL')/x/text()")[[1]][[1]], "Hi Friends!")
   # Cleanup
   Execute(Session, "Close")

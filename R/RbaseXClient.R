@@ -28,7 +28,7 @@ BasexClient <- R6Class(
       bin <- if (grepl("retrieve\\s+", command, ignore.case = TRUE)) TRUE
       else FALSE
       private$sock$void_send(command)
-      # The server responds by sending {result} {info} 0x00 and a status-byte
+      # The server responds by sending {result} {info} and a status-byte
       # Status 0x00 means success, 0x01 means error
       result <- private$sock$str_receive(bin = bin)
       info <-   private$sock$str_receive()
@@ -37,7 +37,6 @@ BasexClient <- R6Class(
 
       success = private$sock$bool_test_sock()
       self$set_success(success)
-
       if (success || (!success && self$get_intercept()))
         return(list(result = result, info = info, success = self$get_success()))
       else stop(info)
@@ -151,13 +150,12 @@ BasexClient <- R6Class(
         stop("'path' and/or 'input' are missing")
       } else {
         switch(as.character(Caller[[3]]),
-               "Create"  =  writeBin(as.raw(0x08), private$sock$get_socket()),
-               "Add"     =  writeBin(as.raw(0x09), private$sock$get_socket()),
-               "Replace" =  writeBin(as.raw(0x0C), private$sock$get_socket()),
-               "Store"   =  writeBin(as.raw(0x0D), private$sock$get_socket())
+               "Create"  =  private$sock$write_Byte(as.raw(0x08)),
+               "Add"     =  private$sock$write_Byte(as.raw(0x09)),
+               "Replace" =  private$sock$write_Byte(as.raw(0x0C)),
+               "Store"   =  private$sock$write_Byte(as.raw(0x0D))
         )
         private$sock$void_send(path)
-        # browser()
         input <- input_to_raw(input)
         private$sock$void_send(input)
         # The server responds by sending {info}, 0x00 and a status-byte
@@ -166,7 +164,6 @@ BasexClient <- R6Class(
 
         success = private$sock$bool_test_sock()
         self$set_success(success)
-
         if (success || (!success && self$get_intercept()))
           return(list(info = partial, success = self$get_success))
         else {

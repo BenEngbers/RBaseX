@@ -15,22 +15,22 @@
 input_to_raw <- function(input, addZero = FALSE) {
   type <- typeof(input)
   switch (type,
-          "raw"       = raw_input <- input,             # Raw
+          "raw"       = raw_input <- input,       # Raw
           "character" = {
-            if (input == "") {                          # Empty input
+            if (input == "") {                    # Empty input
               raw_input <- raw(0)
-            } else if (file.exists(input)) {            # File on filesystem
+            } else if (file.exists(input)) {      # File on filesystem
               finfo <- file.info(input)
               toread <- file(input, "rb")
               raw_input <- readBin(toread, what = "raw", size = 1, n = finfo$size)
               close(toread)
-            } else if (url.exists(input)) {            # URL
+            } else if (url.exists(input)) {       # URL
               get_URL <- getURL(input)
               raw_input <- charToRaw(get_URL)
               raw_length <- length(raw_input)
               if (raw_input[raw_length] == "0a") raw_input <- raw_input[-raw_length]
               }
-            else {                                      # String
+            else {                                # String
               raw_input <- charToRaw(input)
             }
           },

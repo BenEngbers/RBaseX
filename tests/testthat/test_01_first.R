@@ -10,11 +10,17 @@ test_that("Credentials are accepted and a db is created", {
   Session$set_intercept(TRUE)
   Session$Execute("drop DB TestDB")
   Session$Execute("Open TestDB")
-  if (!Session$get_success()) {
+  Opened <- Session$get_success()
+  if (!Opened) {
     Session$Create("TestDB")
     Session$Add("Test.xml", "<Line_1 line='1'>Content 1</Line_1>")
     Session$Add("Test.xml", "<Line_2 line='2'>Content 2</Line_2>")
     Session$Add("Test.xml", "<Line_3 line='3'>Content 3</Line_3>")
+    Session$Add("Books", "<book title='XQuery' author='Walmsley'/>")
+    Add_Book <- "let $book := <book title='Advanced R' author='Wickham'/>
+      return insert node $book as last into collection('TestDB/Books')"
+    Query_obj <- Session$Query(Add_Book)
+    Query_obj$queryObject$ExecuteQuery()
   }
   Session$Execute("Close")
   Session$restore_intercept()             # should be FALSE

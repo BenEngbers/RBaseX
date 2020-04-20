@@ -8,6 +8,7 @@
 #'
 #' @details  The type that is provided to the context, should be one of the standard-types.
 #'     An alternative way is to parse the document information.
+#'     This method returns \emph{self} invisibly, thus making it possible to chain together multiple method calls.
 #'
 #' @examples
 #' \dontrun{

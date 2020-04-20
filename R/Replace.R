@@ -12,6 +12,8 @@
 #'
 #' @description Replaces a resource with the specified input.
 #'
+#' @details This method returns \emph{self} invisibly, thus making it possible to chain together multiple method calls.
+#'
 #' @examples
 #' \dontrun{
 #' Replace(Session, "test", "<xml>Create test</xml>")

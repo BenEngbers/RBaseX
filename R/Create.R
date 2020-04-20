@@ -13,11 +13,12 @@
 #' @description Creates a new database with the specified name and input (may be empty).
 #'
 #' @details Initial content can be offered as string, URL or file.
-#'  	'Check' is a convenience command that combines OPEN and CREATE DB: If a database
-#'  	with the name input exists, and if there is no existing file or directory with the
-#'  	same name that has a newer timestamp, the database is opened. Otherwise, a new
-#'  	database is created; if the specified input points to an existing resource,
-#'  	it is stored as initial content.
+#'     'Check' is a convenience command that combines OPEN and CREATE DB: If a database
+#'     with the name input exists, and if there is no existing file or directory with the
+#'     same name that has a newer timestamp, the database is opened. Otherwise, a new
+#'     database is created; if the specified input points to an existing resource,
+#'     it is stored as initial content.
+#'     This method returns \emph{self} invisibly, thus making it possible to chain together multiple method calls.
 #'
 #' @examples
 #' \dontrun{

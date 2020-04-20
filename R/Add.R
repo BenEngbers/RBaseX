@@ -2,7 +2,7 @@
 #'
 #' @param session BasexClient instance-ID
 #' @param path Path
-#' @param input Additional input (optional).
+#' @param input Additional input (optional)
 #'
 #' @return A list with two items
 #'     \itemize{
@@ -16,6 +16,7 @@
 #'     a file-descriptor, an URL or a stream.
 #'     The utility-function \emph{input_to_raw} can be used to convert an arbitrary
 #'     character vector to a stream.
+#'     This method returns \emph{self} invisibly, thus making it possible to chain together multiple method calls.
 #'
 #' @examples
 #' \dontrun{
