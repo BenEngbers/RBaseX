@@ -19,6 +19,7 @@ Binds a value to the context. The type will be ignored if the string is empty.
 \details{
 The type that is provided to the context, should be one of the standard-types.
     An alternative way is to parse the document information.
+    This method returns \emph{self} invisibly, thus making it possible to chain together multiple method calls.
 }
 \examples{
 \dontrun{

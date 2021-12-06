@@ -11,13 +11,14 @@ test_that("Query-object is created and executed", {
   Query_1 <- Session$Query("for $i in 1 to 2 return $i")
   expect_equal(Session$get_success(), TRUE)
   res <- Query_1$queryObject$ExecuteQuery()
-  t1 <- list(c("1", "2"))
-  expect_equal(t1, res)
+  t1 <- c("1", "2")
+  expect_equal(t1, res$Result)
 
   Query_2 <- Session$Query("for $i in 3 to 4 return i")
   expect_equal(Session$get_success(), TRUE)
-  expect_equal(Query_2$queryObject$ExecuteQuery(), "")
-  expect_equal(Session$get_success(), FALSE)
+  res <- Query_2$queryObject$ExecuteQuery()
+  # expect_equal(grep("XPD", res[[1]][2]), 1)
+  expect_equal(Session$get_success(), TRUE)
   # Cleanup
   Query_1$queryObject$Close()
   Query_2$queryObject$Close()

@@ -11,10 +11,8 @@ Al methods that are used by BasexClient and QueryClass
 \itemize{
 \item \href{#method-new}{\code{SocketClass$new()}}
 \item \href{#method-finalize}{\code{SocketClass$finalize()}}
-\item \href{#method-bool_test_sock}{\code{SocketClass$bool_test_sock()}}
-\item \href{#method-void_send}{\code{SocketClass$void_send()}}
-\item \href{#method-str_receive}{\code{SocketClass$str_receive()}}
-\item \href{#method-get_socket}{\code{SocketClass$get_socket()}}
+\item \href{#method-handShake}{\code{SocketClass$handShake()}}
+\item \href{#method-write_Byte}{\code{SocketClass$write_Byte()}}
 \item \href{#method-clone}{\code{SocketClass$clone()}}
 }
 }
@@ -46,29 +44,12 @@ When releasing the session-object, close the socketConnection
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-bool_test_sock"></a>}}
-\if{latex}{\out{\hypertarget{method-bool_test_sock}{}}}
-\subsection{Method \code{bool_test_sock()}}{
-Return a boolean that indicates the result from the last action on the socket
+\if{html}{\out{<a id="method-handShake"></a>}}
+\if{latex}{\out{\hypertarget{method-handShake}{}}}
+\subsection{Method \code{handShake()}}{
+Send input to the socket and return the response
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{SocketClass$bool_test_sock(socket)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{socket}}{Socket-ID}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-void_send"></a>}}
-\if{latex}{\out{\hypertarget{method-void_send}{}}}
-\subsection{Method \code{void_send()}}{
-Send input to the socket
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{SocketClass$void_send(input)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{SocketClass$handShake(input)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -79,42 +60,26 @@ Send input to the socket
 \if{html}{\out{</div>}}
 }
 \subsection{Details}{
-Input is either a string or data that is read from a stream
+Input is a raw vector, built up by converting all input to raw and concatenating the results
 }
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-str_receive"></a>}}
-\if{latex}{\out{\hypertarget{method-str_receive}{}}}
-\subsection{Method \code{str_receive()}}{
-Read a string from a stream
+\if{html}{\out{<a id="method-write_Byte"></a>}}
+\if{latex}{\out{\hypertarget{method-write_Byte}{}}}
+\subsection{Method \code{write_Byte()}}{
+Write 1 byte to the socket
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{SocketClass$str_receive(input, output, bin = FALSE)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{SocketClass$write_Byte(Byte)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{input, output}}{Input- and output-stream}
-
-\item{\code{bin}}{Boolean; TRUE when str_receive has to retrieve binary data}
+\item{\code{Byte}}{A  vector length 1}
 }
 \if{html}{\out{</div>}}
 }
-\subsection{Details}{
-This method is not intented to be called direct
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-get_socket"></a>}}
-\if{latex}{\out{\hypertarget{method-get_socket}{}}}
-\subsection{Method \code{get_socket()}}{
-Get socket-ID
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{SocketClass$get_socket()}\if{html}{\out{</div>}}
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-clone"></a>}}

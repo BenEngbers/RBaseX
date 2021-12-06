@@ -14,6 +14,9 @@ SetIntercept(session, intercept)
 \description{
 Assign a new value to session$Intercept
 }
+\details{
+This method returns \emph{self} invisibly, thus making it possible to chain together multiple method calls.
+}
 \examples{
 \dontrun{
 SetIntercept(TRUE)

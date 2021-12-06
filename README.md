@@ -3,6 +3,11 @@ BaseX R Client
 
 ## Revision history
 
+Version 0.9.2: 2021-12-05
+* Complete rewrite
+* For each command that can be send to the server, the code is clearly separated in a part for pre-handling the inout data and a part for handling the response
+* Nearly all responses are returned as a named list
+
 Version 0.3.0 : 2020-04-20
 
 * All methods that read from or write to the socket, have been moved to SocketClass.R.

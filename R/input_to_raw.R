@@ -1,9 +1,8 @@
-#' input_to_raw
+#' @title input_to_raw
 #'
 #' @return 'Raw' vector
 #'
 #' @param input Character vector length 1
-#' @param addZero If TRUE, add a zero-byte (0x00) to the raw-vector
 #'
 #' @description Convert \emph{input} to a length-1 character vector.
 #'
@@ -12,7 +11,8 @@
 #'     The function does not catch errors.
 #'
 #' @export
-input_to_raw <- function(input, addZero = FALSE) {
+
+input_to_raw <- function(input) {
   type <- typeof(input)
   switch (type,
           "raw"       = raw_input <- input,       # Raw
@@ -24,19 +24,18 @@ input_to_raw <- function(input, addZero = FALSE) {
               toread <- file(input, "rb")
               raw_input <- readBin(toread, what = "raw", size = 1, n = finfo$size)
               close(toread)
-            } else if (url.exists(input)) {       # URL
-              get_URL <- getURL(input)
-              raw_input <- charToRaw(get_URL)
-              raw_length <- length(raw_input)
-              if (raw_input[raw_length] == "0a") raw_input <- raw_input[-raw_length]
-              }
+            } else if (is.VALID(input)) {
+              get_URL <- httr::GET(input)
+              raw_input <- get_URL$content
+            }
             else {                                # String
               raw_input <- charToRaw(input)
             }
           },
-          default = stop("Unknown input-type, please report the type of the input.")
+          default = stop("Unknown input-type, please report the type of the input."
+         )
   )
-  if (addZero) raw_input <- c(raw_input, c(0x00)) %>% as.raw()
-
   return(raw_input)
 }
+
+

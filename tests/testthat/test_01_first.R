@@ -7,8 +7,7 @@ test_that("Credentials are accepted and a db is created", {
   # Create and populate a Test-database
   Session <- BasexClient$new("localhost", 1984L, username = "admin", password = "admin")
 
-  Session$set_intercept(TRUE)
-  Session$Execute("drop DB TestDB")
+  Session$set_intercept(TRUE)$Execute("drop DB TestDB")
   Session$Execute("Open TestDB")
   Opened <- Session$get_success()
   if (!Opened) {

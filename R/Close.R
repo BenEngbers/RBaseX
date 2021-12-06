@@ -2,7 +2,11 @@
 #'
 #' @param query_obj QueryClass instance-ID
 #'
-#' @return NULL
+#' @return This function returns a list with the following items:
+#'     \itemize{
+#'       \item {info} {Info}
+#'       \item {success} {A boolean, indicating if the command was completed successfull}
+#'     }
 #'
 #' @description Closes and unregisters the query with the specified ID
 #'

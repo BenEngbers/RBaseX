@@ -24,12 +24,10 @@ Query <- function(session, query_string) {
   }
   tryCatch(
     { queryObject <- QueryClass$new(query_string, session)
-    success <- session$get_socket()$bool_test_sock()
-    session$set_success(success)
-    return(list(queryObject = queryObject, success = session$get_success()))
+    success <- session$get_success()
+      return(list(queryObject = queryObject, success = success))
     },
     error = function(e) {
-      success <- session$get_socket()$bool_test_sock()
       session$set_success(success)
       if (session$get_intercept()) {
         return(list(queryObject = NULL, success = session$get_success()))

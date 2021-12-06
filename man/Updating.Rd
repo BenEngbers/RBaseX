@@ -10,7 +10,11 @@ Updating(query_obj)
 \item{query_obj}{Query instance-ID}
 }
 \value{
-Boolean
+This function returns a list with the following items:
+    \itemize{
+      \item {result} {Result}
+      \item {success} {A boolean, indicating if the command was completed successfull}
+    }
 }
 \description{
 Check if the query contains updating expressions.

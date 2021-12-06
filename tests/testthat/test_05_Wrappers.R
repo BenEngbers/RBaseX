@@ -9,7 +9,6 @@ test_that("Session, Database and QueryObjects are created and can be used", {
   expect_true(GetIntercept(Session))
   Execute(Session, "Open TestOpen")        # Ensure that TestOpen does not exist
   if (GetSuccess(Session)) {
-    Execute(Session,"Close")
     Execute(Session,"DROP DB TestOpen")
   }
   SetIntercept(Session, FALSE)             # should be FALSE
@@ -46,14 +45,27 @@ test_that("'Full' and 'More' output should differ", {
   skip_unless_socket_available()
   Session <- NewBasexClient(user = "admin", password = "admin")
 
-  Query_1 <- Query(Session, "collection('TestDB/Test.xml')")
+  Zero_results <- Query(Session, "collection('TestDB/Test')")
+  fullResult <- Full(Zero_results)
+  expect_length(fullResult$fullResult, 0)
+
+  iterResult <- c()
+  while (More(Zero_results)) {
+    iterResult <- c(iterResult, Next(Zero_results))
+  }
+  expect_length(iterResult, 0)
+
+  Query_1 <- Query(Session, "collection('/TestDB/Test.xml')")
   fullResult <- Full(Query_1)
-  expect_equal(substr(fullResult[[2]], 1, 16), "/TestDB/Test.xml")
+  expect_length(fullResult$fullResult, 6)
+  expect_equal(fullResult$fullResult[[1]][[2]], "/TestDB/Test.xml")
+
   iterResult <- c()
   while (More(Query_1)) {
     iterResult <- c(iterResult, Next(Query_1))
-  }
-  expect_length(iterResult, 6)
+    }
+  expect_length(iterResult, 3)
+
   # Cleanup
   Close(Query_1)
   rm(Session)
@@ -68,20 +80,24 @@ test_that("Query is executed and Updating() is false", {
   Query_2 <- Query(Session, "for $i in 3 to 4 return $i")
   expect_equal(Session$get_success(), TRUE)
   res <- Execute(Query_1)
+  info <- Info(Query_1)
   expect_length(res[[1]], 2)
-  res <- Execute(Query_2)
-  t2 <- list(c("3", "4"))
-  expect_equal(t2, res)
+  expect_equal(substr(info$Info, 1, 5), "Query")
 
-  expect_false(Updating(Query_1))
-  expect_output(str(Options(Query_1)), "No options set")
+  res <- Execute(Query_2)
+  t2 <- c("3", "4")
+  expect_equal(t2, res$Result)
+
+  expect_equal(Updating(Query_1)$result, "false")
+  expect_equal(Options(Query_1)$Options, "No options set")
+
   # Cleanup
   Close(Query_1)
   Close(Query_2)
   rm(Session)
 })
 
-test_that("Binding and Context function", {
+test_that("Binding function binds variables", {
   skip_unless_socket_available()
   Session <- BasexClient$new("localhost", 1984L, username = "admin", password = "admin")
 
@@ -89,46 +105,46 @@ test_that("Binding and Context function", {
                    "declare variable $name external; for $i in 1 to 2 return element { $name } { $i }")
   Bind(Query_1, "$name", "number")
   expect_output(str(Execute(Query_1)), '"<number>1</number>" "<number>2</number>"')
+
   Query_2 <- Query(Session,
                    "declare variable $name external; for $i in 3 to 4 return element { $name } { $i }")
   Bind(Query_2, "$name", "number", "xs:string")
   expect_output(str(Execute(Query_2)), '"<number>3</number>" "<number>4</number>"')
 
-  Query_3 <- Query(Session,
-                   "declare variable $name external;
+  Query_3 <- Query(Session, "declare variable $name external;
     for $t in collection('TestDB/Books')/book
     where $t/@author = $name
     return $t/@title/string()")
-  Bind(Query_3, "$name", list("Walmsley", "Wickham"))
+  names <- list("Walmsley", "Wickham")
+  Bind(Query_3, "$name", names)
   expect_output(str(Execute(Query_3)), '"XQuery" "Advanced R"')
 
-  Query_4 <- Query(Session,
-                   "declare variable $name external;
+  Query_4 <- Query(Session, "declare variable $name external;
     for $t in collection('TestDB/Books')/book
     where $t/@author = $name
     return $t/@title/string()")
-  Bind(Query_4, "$name", list("Walmsley", "Wickham"), list("xs:string", "xs:string"))
+  types <- list("xs:string", "xs:string")
+  Bind(Query_4, "$name", names, types)
   expect_output(str(Execute(Query_4)), '"XQuery" "Advanced R"')
+
+  # Cleanup
+  Close(Query_1)
+  Close(Query_2)
+  Close(Query_3)
+  Close(Query_4)
+  rm(Session)
+})
+
+test_that("Context function works", {
+  skip_unless_socket_available()
+  Session <- BasexClient$new("localhost", 1984L, username = "admin", password = "admin")
 
   ctxt_query <- Query(Session, "for $t in .//text() return string-length($t)")
   ctxt_txt   <- paste0("<xml>", "<txt>Hi</txt>", "<txt>World</txt>", "</xml>")
-  Context(ctxt_query, ctxt_txt, type = "document-node()")
+  t <- Context(ctxt_query, ctxt_txt, type = "document-node()")
   expect_output(str(Execute(ctxt_query)), '"2" "5"')
 
-  # book_txt <- paste0("<books>",
-  #                    "<book title = 'XQuery' author = 'Walmsley'/>",
-  #                    "<book title = 'Advanced R' author = 'Wickham'/>",
-  #                    "</books>")
-  # Books  <- paste0("<books>",
-  #                    "<book title = 'XQuery' author = 'Walmsley'/>",
-  #                    "<book title = 'Advanced R' author = 'Wickham'/>",
-  #                    "</books>")
-  # Add(Session, path = "Books", Books)
-
-
-
-    # Cleanup
-  Close(Query_1)
+  # Cleanup
   Close(ctxt_query)
   rm(Session)
 })
@@ -138,11 +154,11 @@ test_that("Binary content is handled correctly", {
   Session <- BasexClient$new("localhost", 1984L, username = "admin", password = "admin")
 
   Execute(Session, "Check TestDB")
-  bais <- raw()
-  for (b in 252:255) bais <- c(bais, c(b)) %>% as.raw()
+  bais <- as.raw(c(252,253,254,255,255,254,255))
   Store(Session, "test.bin", bais)
+
   baos <- Execute(Session, "retrieve test.bin")
-  expect_output(str(baos$result), "fc fd fe ff")
+  expect_equal(baos$result, as.raw(c(252, 253 ,254, 255, 255, 254, 255)))
   # Cleanup
   Execute(Session, "Close")
   rm(Session)

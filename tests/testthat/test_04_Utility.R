@@ -7,7 +7,6 @@ test_that("Sequence result is converted to frame", {
   Query_1$queryObject$Bind("$name", "number")
   re <- Query_1$queryObject$ExecuteQuery()
 
-  # res_m <- result2matrix(re, 3)
   res_f <- result2frame(re, 3)
   expect_equal(nrow(res_f), 3)
   expect_equal(class(res_f), "data.frame")

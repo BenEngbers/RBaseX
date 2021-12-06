@@ -11,7 +11,7 @@ Add(session, path, input)
 
 \item{path}{Path}
 
-\item{input}{Additional input (optional).}
+\item{input}{Additional input (optional)}
 }
 \value{
 A list with two items
@@ -28,6 +28,7 @@ The 'input' can be a length-1 character vector which describes an element,
     a file-descriptor, an URL or a stream.
     The utility-function \emph{input_to_raw} can be used to convert an arbitrary
     character vector to a stream.
+    This method returns \emph{self} invisibly, thus making it possible to chain together multiple method calls.
 }
 \examples{
 \dontrun{

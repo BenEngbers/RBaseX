@@ -25,6 +25,7 @@ Stores a binary resource in the opened database.
 }
 \details{
 Use the database-command \emph{retrieve} to retrieve the resource.
+    This method returns \emph{self} invisibly, thus making it possible to chain together multiple method calls.
 }
 \examples{
 \dontrun{

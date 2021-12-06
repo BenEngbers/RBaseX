@@ -42,8 +42,8 @@ The client can be used in 'standard' mode and in 'query' mode.
 \item \href{#method-new}{\code{BasexClient$new()}}
 \item \href{#method-Execute}{\code{BasexClient$Execute()}}
 \item \href{#method-Query}{\code{BasexClient$Query()}}
-\item \href{#method-Add}{\code{BasexClient$Add()}}
 \item \href{#method-Create}{\code{BasexClient$Create()}}
+\item \href{#method-Add}{\code{BasexClient$Add()}}
 \item \href{#method-Replace}{\code{BasexClient$Replace()}}
 \item \href{#method-Store}{\code{BasexClient$Store()}}
 \item \href{#method-set_intercept}{\code{BasexClient$set_intercept()}}
@@ -89,7 +89,7 @@ Execute a command
 \if{html}{\out{</div>}}
 }
 \subsection{Details}{
-For a list of database commands see \url{http://docs.basex.org/wiki/Commands}
+For a list of database commands see \url{https://docs.basex.org/wiki/Commands}
 }
 
 }
@@ -99,13 +99,13 @@ For a list of database commands see \url{http://docs.basex.org/wiki/Commands}
 \subsection{Method \code{Query()}}{
 Create a new query-object
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BasexClient$Query(query)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{BasexClient$Query(query_string)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{query}}{Query-string}
+\item{\code{query_string}}{Query-string}
 }
 \if{html}{\out{</div>}}
 }
@@ -116,25 +116,6 @@ A query-object has two fields. 'queryObject' is an ID for the new created 'Query
 
 \subsection{Returns}{
 ID for the created query-object
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Add"></a>}}
-\if{latex}{\out{\hypertarget{method-Add}{}}}
-\subsection{Method \code{Add()}}{
-Add a new resouce at the specified path
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BasexClient$Add(path, input)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{path}}{Path}
-
-\item{\code{input}}{File, directory or XML-string}
-}
-\if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}
@@ -159,6 +140,25 @@ Create a new database
 Initial content can be offered as string, URL or file.
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Add"></a>}}
+\if{latex}{\out{\hypertarget{method-Add}{}}}
+\subsection{Method \code{Add()}}{
+Add a new resouce at the specified path
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{BasexClient$Add(path, input)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{path}}{Path}
+
+\item{\code{input}}{File, directory or XML-string}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Replace"></a>}}
@@ -219,10 +219,6 @@ Toggles between using the ´success'-field, returned by the
 }
 \if{html}{\out{</div>}}
 }
-\subsection{Details}{
-sgfdsffdsh
-}
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-restore_intercept"></a>}}

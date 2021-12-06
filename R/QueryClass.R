@@ -4,6 +4,7 @@
 #'     Query mode is used to define queries, binding variables and for iterative evaluation.
 #'
 #' @export
+
 QueryClass <- R6Class(
   "QueryClass",
   portable = TRUE,
@@ -13,15 +14,24 @@ QueryClass <- R6Class(
     #'     the 'BasexClient'-class.
     #' @param query Query-string
     #' @param Parent The 'Parent' for this QueryClass-instance
-    #' @param sock Session-socket
-    #' @param Intercept Pointer to the Intercept-method from the Session-object
     initialize = function(query, Parent) {
       private$parent <- Parent
       private$sock <- Parent$get_socket()
-      out_stream <- private$sock$get_socket()
-      private$sock$write_Byte(as.raw(0x00))
-      private$sock$void_send(query)
-      private$raw_id <- charToRaw(private$sock$str_receive()) %>% append(0) %>% as.raw()
+      exec <- c(as.raw(0x00), addVoid(query))
+      response <- private$sock$handShake(exec) %>% split_Response()
+      private$raw_id <- charToRaw(response[[1]]) %>% append(0) %>% as.raw()
+      private$parent$set_success(response[[2]])
+    },
+
+    #' @description Executes a query.
+    ExecuteQuery = function() {
+      exec <- c(as.raw(0x05), private$raw_id)
+      response <- private$sock$handShake(exec) %>% split_Response()
+
+      names(response) <- c("Result", "success")
+      response %<>% private$handle_response()
+      return(response)
+      invisible(self)
     },
 
     #' @description Binds a value to a variable.
@@ -29,57 +39,37 @@ QueryClass <- R6Class(
     #' @param query_obj QueryClass instance-ID
     #' @param ... Binding Information
     Bind = function(...) {
-      socket <- private$sock$get_socket()
-      private$write_code_ID(0x03)
-
       arguments <- list(...)
-      name <-  arguments[[1]]
-      value <- arguments[[2]]
+      name <-  arguments[[1]]; value <- arguments[[2]]
       argCnt <- length(arguments)
-
-      private$sock$void_send(name)
       if (argCnt == 2) {
-        if (is.character(value)) {                        # single name/value tupple
-          private$sock$void_send(value)
-          private$sock$void_send("")
-        } else {                                          # bind name to sequence
+        type <- ""
+        if (!is.character(value)) {                        # single name/value tupple
           values <- raw(0)
-          for (i in 1:length(value)) {
-            values <- c(values, charToRaw(value[[i]]))
-            values <- c(values, c(0x01))
-          }
-          values <- values[-length(values)]               # Remove last 0x01
-          values %<>% as.raw()
-          private$sock$void_send(values)                  # Send the values
-          private$sock$void_send("")                      # Send the types
+          lapply(lapply(value, '[[',1), function(x) {values <<- c(values,charToRaw(x), c(0x01))})
+          values <- head(values, -1)                       # Remove last 0x01
+          value <- values %<>% as.raw()
         }
       } else {
         type <- arguments[[3]]
-        if (is.character(value) && is.character(type)) {  # single name/value/type tupple
-          private$sock$void_send(value)
-          private$sock$void_send(type)
-        } else {                                          # bind name to sequence values and types
-          values <- raw(0)
-          for (i in 1:length(value)) {
-            values <- c(values, charToRaw(value[[i]]))
-            values <- c(values, c(0x02))
-            values <- c(values, charToRaw(type[[i]]))
-            values <- c(values, c(0x01))
-          }
-          values <- values[-length(values)]               # Remove last 0x01
-          values %<>% as.raw()
-          private$sock$void_send(values)                  # Send the values
-          private$sock$void_send("")                      # Send the types
+        if (!(is.character(value) && is.character(type))) {  # single name/value/type tupple
+          values <- raw(0)                                   # bind name to sequence values and types
+          mapply(function(val, typ)
+          {values <<- c(values, charToRaw(val), c(0x02), charToRaw(typ),(0x01))},
+          value, type)
+          values <- head(values, -1)                       # Remove last 0x01
+          value <- values %<>% as.raw()
+          type <- ""
         }
       }
 
-      private$req_result <- private$sock$str_receive()
+      exec <- c(as.raw(0x03), private$raw_id,
+                addVoid(name), addVoid(value), addVoid(type))
+      response <- private$sock$handShake(exec) %>% split_Response()
 
-      success <- private$parent$get_socket()$bool_test_sock()
-      private$parent$set_success(success)
-      if (success || (!success && private$parent$get_intercept()))
-        return(list(queryObject = NULL, success = private$parent$get_success()))
-      else stop(private$sock$str_receive())
+      names(response) <- c("Binding", "success")
+      response %<>% private$handle_response()
+      return(response)
       invisible(self)
     },
 
@@ -88,72 +78,72 @@ QueryClass <- R6Class(
     #' @param value Value that should be boud to the context
     #' @param type The type will be ignored when the string is empty
     Context = function(value, type) {
-      socket <- private$sock$get_socket()
-      private$write_code_ID(0x0E)
-      private$sock$void_send(value)
-      if (missing(type)) private$sock$write_Byte(as.raw(0x00))
-      else
-        private$sock$void_send(type)
+      if (missing(type)) type <- as.raw(0x00)
 
-      private$req_result <- private$sock$str_receive()
-      success <- private$parent$get_socket()$bool_test_sock()
-      private$parent$set_success(success)
-      if (success || (!success && private$parent$get_intercept()))
-        return(list(queryObject = NULL, success = private$parent$get_success()))
-      else stop(private$sock$str_receive())
+      exec <- c(as.raw(0x0E), private$raw_id,
+                addVoid(value), addVoid(type))
+      response <- private$sock$handShake(exec) %>% split_Response()
+
+      names(response) <- c("queryObject", "success")
+      response %<>% private$handle_response()
+      return(response)
       invisible(self)
     },
 
-    #' @description     Closes and unregisters the query with the specified ID
-    #' @details When using the primitive functions, this function can be chained.
-    Close = function() {
-      private$default_query_pattern(match.call()[[1]])
-      invisible(self)
-    },
+    #' @description Executes a query and returns a vector with all resulting items as strings,
+    #'     prefixed by the 'XDM' (Xpath Data Model) Meta Data <https://www.xdm.org/>.
+    Full = function() {
+      exec <- c(as.raw(0x1F), private$raw_id)
+      response <- private$sock$handShake(exec)
 
-    #' @description Executes a query.
-    ExecuteQuery = function() {
-      private$cache <- NULL
-      private$default_query_pattern(match.call()[[1]])
-    },
-
-    #' @description Returns a string with query compilation and profiling info.
-    Info = function() {
-      private$default_query_pattern(match.call()[[1]])
-    },
-
-    #' @description Returns a string with all query serialization parameters, which
-    #'     can e.g. be assigned to the serializer option.
-    Options = function() {
-      private$default_query_pattern(match.call()[[1]])
-      return(ifelse(!private$req_result == "",
-                    private$req_result %>% private$clean(), "No options set")
-      )
-    },
-
-    #' @description Check if the query contains updating expressions.
-    Updating = function() {
-      private$default_query_pattern(match.call()[[1]])
-      private$req_result %<>% as.logical()
+      errors <- which(response == as.raw(c("01")))
+      error <- (length(errors) > 0)
+      private$parent$set_success(error)
+      if (error) {
+        response <- split_Response(response)
+      } else {
+        resp_list <- head(response, -3) %>% strip_CR() %>% strip_FF()
+        if (length(response) == 2) {                       # Read was succesfull but had no results
+          result <- list()
+        } else {
+          zero <- which(resp_list == 00)
+          sta <- c(1, zero +1); sto <- c(zero, length(resp_list))
+          result <-
+            mapply(function(sta, sto, vec) {as.raw(vec[sta:sto])}, sta, sto, MoreArgs = list(resp_list) ) %>%
+            lapply(function(x) {unlist(list(head(x, 1) %>% as.character(), x %>% rawToChar()))})
+        }
+        response <- list(result, !error)
+      }
+      names(response) <- c("fullResult", "success")
+      return(response)
     },
 
     #' @description Indicates if there are any other results in the query-result.
     More = function() {
-      if (is.null(private$cache)) { # The cache has to be filled
-        private$write_code_ID(0x04)
-        cache <- c()
-        while ((rd<- private$sock$read_Byte()) > 0) {
-          cache <- c(cache, as.character(rd))
-          cache <- c(cache, private$sock$str_receive())
-        }
-        success <- private$parent$get_socket()$bool_test_sock()
-        private$parent$set_success(success)
-        private$cache <- cache
+      if (is.null(private$cache)) {                        # The cache has to be filled
+        exec <- c(as.raw(0x04), private$raw_id)
+        response <- private$sock$handShake(exec)
+
         private$pos <- 0
+        if (identical(response, as.raw(c(0,0)))) {
+          private$cache <- list()
+        } else {
+          if (is.PLATFORM("Windows")) response %<>%  strip_CR()
+          resp_list <- head(response, -3)
+
+          result <- c()
+          zero <- which(resp_list == 00)
+          sta <- c(1, zero +1); sto <- c(zero -1, length(resp_list))
+          result <- mapply(function(start, stop, vec) {vec[start:stop]}, sta, sto, MoreArgs = list(resp_list) , SIMPLIFY = FALSE)
+          result %<>% lapply(function(x) {unlist(list(head(x, 1) %>% as.character(), tail(x, -1) %>% rawToChar()))})
+
+          private$cache <- result
+        }
       }
       if ( length(private$cache) > private$pos) return(TRUE)
       else {
         private$cache <- NULL
+        private$pos <- 0
         return(FALSE)
       }},
 
@@ -165,19 +155,48 @@ QueryClass <- R6Class(
       }
       return(result)},
 
-    #' @description Executes a query and returns a vector with all resulting items as strings,
-    #'     prefixed by the 'XDM' (Xpath Data Model) Meta Data <https://www.xdm.org/>.
-    Full = function() {
-      private$write_code_ID(0x1F)
-      cache <- c()
-      while ((rd <- private$sock$read_Byte()) > 0) {
-        cache <- c(cache, as.character(rd))
-        add_cache <- private$sock$str_receive()
-        cache <- c(cache, add_cache)
-      }
-      private$parent$get_socket()$bool_test_sock()
-      result <- cache
-      return(result)
+    #' @description Returns a string with query compilation and profiling info.
+    Info = function() {
+      exec <- c(as.raw(0x06), private$raw_id)
+      response <- private$sock$handShake(exec) %>% split_Response()
+
+      names(response) <- c("Info", "success")
+      response %<>% private$handle_response()
+      return(response)
+    },
+
+    #' @description Returns a string with all query serialization parameters, which
+    #'     can e.g. be assigned to the serializer option.
+    Options = function() {
+      exec <- c(as.raw(0x07), private$raw_id)
+      response <- private$sock$handShake(exec) %>% split_Response()
+
+      names(response) <- c("Options", "success")
+      response %<>% private$handle_response()
+      if (identical(response$Options, character(0))) response$Options <- "No options set"
+      return(response)
+    },
+
+    #' @description Check if the query contains updating expressions.
+    Updating = function() {
+      exec <- c(as.raw(0x1E), private$raw_id)
+      response <- private$sock$handShake(exec) %>% split_Response()
+
+      names(response) <- c("result", "success")
+      response %<>% private$handle_response()
+      return(response)
+    },
+
+    #' @description     Closes and unregisters the query with the specified ID
+    #' @details When using the primitive functions, this function can be chained.
+    Close = function() {
+      exec <- c(as.raw(0x02), private$raw_id)
+      response <- private$sock$handShake(exec) %>% split_Response()
+
+      names(response) <- c("info", "success")
+      response %<>% private$handle_response()
+      return(response)
+      invisible(self)
     }
   ),
 
@@ -187,11 +206,19 @@ QueryClass <- R6Class(
     raw_id = NULL,
     cache = NULL,
     pos = NULL,
-    req_result = NULL,
-    write_code_ID = function(id_code) {
-      private$sock$write_Byte(as.raw(id_code))
-      private$sock$write_Byte(private$raw_id)
-      },
+    # req_result = NULL,
+
+    handle_response = function(Response) {
+      private$parent$set_success(Response$success)
+      Response[[1]]  %<>% strsplit("\n")
+      Response[[1]] <- Response[[1]][[1]][which(Response[[1]][[1]] !="")]
+      if (Response$success || (!Response$success && self$get_intercept()))
+        return(Response)
+      else {
+        errorMsg <- Response[[1]]
+        stop(errorMsg)
+      }
+    },
     clean = function(input) {
       if (input == "") return(input)
       else {
@@ -199,25 +226,6 @@ QueryClass <- R6Class(
         if ((result[[1]][1]  == "")) result <- result[[1]][2]
       }
       return(result)
-    },
-    default_query_pattern = function(Caller) {
-      switch(as.character(Caller[[3]]),
-             "Close"        =  private$write_code_ID(0x02),
-             "ExecuteQuery" =  private$write_code_ID(0x05),
-             "Info"         =  private$write_code_ID(0x06),
-             "Options"      =  private$write_code_ID(0x07),
-             "Updating"     =  private$write_code_ID(0x1E)
-      )
-      private$req_result <- private$sock$str_receive()
-      success <- private$parent$get_socket()$bool_test_sock()
-      private$parent$set_success(success)
-      if (success || (!success && private$parent$get_intercept()))
-        result <- private$req_result %>% private$clean()
-      else {
-        error_msg <- private$sock$str_receive()
-        self$Close()
-        stop(error_msg)
-      }
     }
   )
 )

@@ -2,8 +2,7 @@
 #'
 #' @return Return result from query as tibble
 #'
-#' @param input Query-result
-#' @param cols Number of columns
+#' @param ... Query-result
 #'
 #' @description Converts the query-result to a tibble. The query-result is either a list (sequence) or an array.
 #'     If it is a list, 'cols' is needed to determine the number of columns.

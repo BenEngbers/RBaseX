@@ -7,9 +7,7 @@
 result2frame(...)
 }
 \arguments{
-\item{input}{Query-result}
-
-\item{cols}{Number of columns}
+\item{...}{Query-result}
 }
 \value{
 Return result from query as dataframe

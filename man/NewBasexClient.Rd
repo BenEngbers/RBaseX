@@ -18,7 +18,7 @@ BasexClient-instance
 Create a BaseX-client
 }
 \details{
-This creates a BaseX-client that listens to port 1984 on localhost.
+This creates a BaseX-client. By default it listens to port 1984 on localhost.
     Username and password should be changed after the installation of 'BaseX'.
 }
 \examples{

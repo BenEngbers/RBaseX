@@ -2,7 +2,11 @@
 #'
 #' @param query_obj Query instance-ID
 #'
-#' @return Boolean
+#' @return This function returns a list with the following items:
+#'     \itemize{
+#'       \item {result} {Result}
+#'       \item {success} {A boolean, indicating if the command was completed successfull}
+#'     }
 #'
 #' @description Check if the query contains updating expressions.
 #'

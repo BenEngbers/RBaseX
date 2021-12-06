@@ -11,16 +11,16 @@ The client can be used in 'standard' mode and in 'query' mode.
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{QueryClass$new()}}
+\item \href{#method-ExecuteQuery}{\code{QueryClass$ExecuteQuery()}}
 \item \href{#method-Bind}{\code{QueryClass$Bind()}}
 \item \href{#method-Context}{\code{QueryClass$Context()}}
-\item \href{#method-Close}{\code{QueryClass$Close()}}
-\item \href{#method-ExecuteQuery}{\code{QueryClass$ExecuteQuery()}}
+\item \href{#method-Full}{\code{QueryClass$Full()}}
+\item \href{#method-More}{\code{QueryClass$More()}}
+\item \href{#method-Next}{\code{QueryClass$Next()}}
 \item \href{#method-Info}{\code{QueryClass$Info()}}
 \item \href{#method-Options}{\code{QueryClass$Options()}}
 \item \href{#method-Updating}{\code{QueryClass$Updating()}}
-\item \href{#method-More}{\code{QueryClass$More()}}
-\item \href{#method-Next}{\code{QueryClass$Next()}}
-\item \href{#method-Full}{\code{QueryClass$Full()}}
+\item \href{#method-Close}{\code{QueryClass$Close()}}
 \item \href{#method-clone}{\code{QueryClass$clone()}}
 }
 }
@@ -39,16 +39,22 @@ Initialize a new instance from QueryClass
 \item{\code{query}}{Query-string}
 
 \item{\code{Parent}}{The 'Parent' for this QueryClass-instance}
-
-\item{\code{sock}}{Session-socket}
-
-\item{\code{Intercept}}{Pointer to the Intercept-method from the Session-object}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Details}{
 QueryClass-instances can only be created by calling the 'Query'-method from
     the 'BasexClient'-class.
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-ExecuteQuery"></a>}}
+\if{latex}{\out{\hypertarget{method-ExecuteQuery}{}}}
+\subsection{Method \code{ExecuteQuery()}}{
+Executes a query.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{QueryClass$ExecuteQuery()}\if{html}{\out{</div>}}
 }
 
 }
@@ -99,26 +105,33 @@ When using the primitive functions, this function can be chained.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Close"></a>}}
-\if{latex}{\out{\hypertarget{method-Close}{}}}
-\subsection{Method \code{Close()}}{
-Closes and unregisters the query with the specified ID
+\if{html}{\out{<a id="method-Full"></a>}}
+\if{latex}{\out{\hypertarget{method-Full}{}}}
+\subsection{Method \code{Full()}}{
+Executes a query and returns a vector with all resulting items as strings,
+    prefixed by the 'XDM' (Xpath Data Model) Meta Data <https://www.xdm.org/>.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{QueryClass$Close()}\if{html}{\out{</div>}}
-}
-
-\subsection{Details}{
-When using the primitive functions, this function can be chained.
+\if{html}{\out{<div class="r">}}\preformatted{QueryClass$Full()}\if{html}{\out{</div>}}
 }
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-ExecuteQuery"></a>}}
-\if{latex}{\out{\hypertarget{method-ExecuteQuery}{}}}
-\subsection{Method \code{ExecuteQuery()}}{
-Executes a query.
+\if{html}{\out{<a id="method-More"></a>}}
+\if{latex}{\out{\hypertarget{method-More}{}}}
+\subsection{Method \code{More()}}{
+Indicates if there are any other results in the query-result.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{QueryClass$ExecuteQuery()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{QueryClass$More()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Next"></a>}}
+\if{latex}{\out{\hypertarget{method-Next}{}}}
+\subsection{Method \code{Next()}}{
+Returns the next result when iterating over a query
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{QueryClass$Next()}\if{html}{\out{</div>}}
 }
 
 }
@@ -154,33 +167,16 @@ Check if the query contains updating expressions.
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-More"></a>}}
-\if{latex}{\out{\hypertarget{method-More}{}}}
-\subsection{Method \code{More()}}{
-Indicates if there are any other results in the query-result.
+\if{html}{\out{<a id="method-Close"></a>}}
+\if{latex}{\out{\hypertarget{method-Close}{}}}
+\subsection{Method \code{Close()}}{
+Closes and unregisters the query with the specified ID
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{QueryClass$More()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{QueryClass$Close()}\if{html}{\out{</div>}}
 }
 
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Next"></a>}}
-\if{latex}{\out{\hypertarget{method-Next}{}}}
-\subsection{Method \code{Next()}}{
-Returns the next result when iterating over a query
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{QueryClass$Next()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Full"></a>}}
-\if{latex}{\out{\hypertarget{method-Full}{}}}
-\subsection{Method \code{Full()}}{
-Executes a query and returns a vector with all resulting items as strings,
-    prefixed by the 'XDM' (Xpath Data Model) Meta Data <https://www.xdm.org/>.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{QueryClass$Full()}\if{html}{\out{</div>}}
+\subsection{Details}{
+When using the primitive functions, this function can be chained.
 }
 
 }

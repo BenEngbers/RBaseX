@@ -15,7 +15,7 @@
 #'
 #' @description Executes a database command or a query.
 #'
-#' @details For a list of database commands see \url{http://docs.basex.org/wiki/Commands}
+#' @details For a list of database commands see \url{https://docs.basex.org/wiki/Commands}
 #'
 #'     'BaseX' can be used in a Standard mode or Query mode.
 #'

@@ -11,6 +11,7 @@
 #'     Standard Mode is used for connecting to a server and sending commands.
 #'
 #' @export
+
 BasexClient <- R6Class(
   "BasexClient",
   portable = TRUE,
@@ -23,46 +24,34 @@ BasexClient <- R6Class(
 
     #' @description Execute a command
     #' @param command Command
-    #' @details For a list of database commands see \url{http://docs.basex.org/wiki/Commands}
+    #' @details For a list of database commands see \url{https://docs.basex.org/wiki/Commands}
     Execute = function(command) {
-      bin <- if (grepl("retrieve\\s+", command, ignore.case = TRUE)) TRUE
-      else FALSE
-      private$sock$void_send(command)
-      # The server responds by sending {result} {info} and a status-byte
-      # Status 0x00 means success, 0x01 means error
-      result <- private$sock$str_receive(bin = bin)
-      info <-   private$sock$str_receive()
-      if (class(result) == "character") {result <- result %>% strsplit("\n")}
-      if (length(info) > 0) cat(info, "\n")
+      exec <- c(raw(), addVoid(command))
+      response <- private$sock$handShake(exec) %>% split_Response()
 
-      success = private$sock$bool_test_sock()
-      self$set_success(success)
-      if (success || (!success && self$get_intercept()))
-        return(list(result = result, info = info, success = self$get_success()))
-      else stop(info)
+      if (class(response[[1]]) == "character") response[[1]] %<>% strsplit("\n")
+      response[[2]] %<>% clean_Response()
+      names(response) <- c("result", "info", "success")
+      return(private$handle_response(response))
     },
 
     #' @description Create a new query-object
     #' @details A query-object has two fields. 'queryObject' is an ID for the new created 'QueryClass'-instance.
     #'     'success' holds the status from the last executed operation on the queryObject.
-    #' @param query Query-string
+    #' @param query_string Query-string
     #' @return ID for the created query-object
-    Query = function(query) {
-      if (missing(query)) {
+    Query = function(query_string) {
+      if (missing(query_string)) {
         self$set_success(FALSE)
         if (self$get_intercept()) {
           return(list(queryObject = NULL, success = self$get_success()))
         } else stop("No query-string provided")
       }
       tryCatch(
-        { queryObject <- QueryClass$new(query, self)
-          success <- private$sock$bool_test_sock()
-          self$set_success(success)
+        { queryObject <- QueryClass$new(query_string, self)
           return(list(queryObject = queryObject, success = self$get_success()))
         },
         error = function(e) {
-          success <- private$sock$bool_test_sock()
-          self$set_success(success)
           if (self$get_intercept()) {
             return(list(queryObject = NULL, success = self$get_success()))
           } else {
@@ -72,21 +61,38 @@ BasexClient <- R6Class(
         )
     },
 
-    #' @description Add a new resouce at the specified path
-    #' @param path Path
-    #' @param input File, directory or XML-string
-    Add = function(path, input) {
-      private$default_pattern(match.call()[[1]], path, input)
-      invisible(self)
-    },
-
     #' @description Create a new database
     #' @details Initial content can be offered as string, URL or file.
     #' @param name Name
     #' @param input Initial content, Optional
     Create = function(name, input) {
       if (missing(input)) input <- ""
-      private$default_pattern(match.call()[[1]], name, input)
+
+      exec <- c(as.raw(0x08), addVoid(name), addVoid(input))
+      response <- private$sock$handShake(exec) %>% split_Response()
+
+      response[[1]] %<>% strsplit("\n")
+      response[[1]][[1]] %<>% clean_Response()
+      names(response) <- c("info", "success")
+
+      return(private$handle_response(response))
+      invisible(self)
+    },
+
+    #' @description Add a new resouce at the specified path
+    #' @param path Path
+    #' @param input File, directory or XML-string
+    Add = function(path, input) {
+      if (missing(path) || missing(input)) { stop("'path' and/or 'input' are missing")}
+
+      exec <- c(as.raw(0x09), addVoid(path), addVoid(input_to_raw(input)))
+      response <- private$sock$handShake(exec) %>% split_Response()
+
+      response[[1]] %<>% strsplit("\n")
+      response[[1]][[1]] %<>% clean_Response()
+      names(response) <- c("info", "success")
+
+      return(private$handle_response(response))
       invisible(self)
     },
 
@@ -94,7 +100,14 @@ BasexClient <- R6Class(
     #' @param path Path
     #' @param input File, directory or XML-string
     Replace = function(path, input) {
-      private$default_pattern(match.call()[[1]], path, input)
+      exec <- c(as.raw(0x0C), addVoid(path), addVoid(input))
+      response <- private$sock$handShake(exec) %>% split_Response()
+
+      response[[1]] %<>% strsplit("\n")
+      response[[1]][[1]] %<>% clean_Response()
+
+      names(response) <- c("info", "success")
+      return(private$handle_response(response))
       invisible(self)
     },
 
@@ -103,13 +116,21 @@ BasexClient <- R6Class(
     #' @param path Path
     #' @param input File, directory or XML-string
     Store = function(path, input) {
-      private$default_pattern(match.call()[[1]], path, input)
+      input %<>% add_FF()
+
+      exec <- c(as.raw(0x0D), addVoid(path), addVoid(input))
+      response <- private$sock$handShake(exec) %>% split_Response()
+
+      response[[1]] %<>% strsplit("\n")
+      response[[1]][[1]] %<>% clean_Response()
+
+      names(response) <- c("info", "success")
+      return(private$handle_response(response))
       invisible(self)
     },
 
     #' @description Toggles between using the ´success'-field, returned by the
     #'     Execute-command or using regular error-handling (try-catch).
-    #' @details sgfdsffdsh
     #' @param Intercept Boolean
     set_intercept = function(Intercept) {
       private$Intercept_Old = private$Intercept
@@ -145,32 +166,14 @@ BasexClient <- R6Class(
     Success = NULL,
     Intercept = FALSE,
     Intercept_Old = NULL,
-    default_pattern = function(Caller, path, input) {
-      if (missing(path) || missing(input)) {
-        stop("'path' and/or 'input' are missing")
-      } else {
-        switch(as.character(Caller[[3]]),
-               "Create"  =  private$sock$write_Byte(as.raw(0x08)),
-               "Add"     =  private$sock$write_Byte(as.raw(0x09)),
-               "Replace" =  private$sock$write_Byte(as.raw(0x0C)),
-               "Store"   =  private$sock$write_Byte(as.raw(0x0D))
-        )
-        private$sock$void_send(path)
-        input <- input_to_raw(input)
-        private$sock$void_send(input)
-        # The server responds by sending {info}, 0x00 and a status-byte
-        # Status 0x00 means success, 0x01 means error
-        partial <- private$sock$str_receive()
 
-        success = private$sock$bool_test_sock()
-        self$set_success(success)
-        if (success || (!success && self$get_intercept()))
-          return(list(info = partial, success = self$get_success))
-        else {
-          errorMsg <- private$sock$str_receive()
-          close(private$sock$get_socket())
-          stop(errorMsg)
-        }
+    handle_response = function(Response) {
+      self$set_success(Response$success)
+      if (Response$success || (!Response$success && self$get_intercept()))
+        return(Response)
+      else {
+        errorMsg <- Response[[1]]
+        stop(errorMsg)
       }
     }
   )

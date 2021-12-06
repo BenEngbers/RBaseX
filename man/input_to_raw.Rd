@@ -4,12 +4,10 @@
 \alias{input_to_raw}
 \title{input_to_raw}
 \usage{
-input_to_raw(input, addZero = FALSE)
+input_to_raw(input)
 }
 \arguments{
 \item{input}{Character vector length 1}
-
-\item{addZero}{If TRUE, add a zero-byte (0x00) to the raw-vector}
 }
 \value{
 'Raw' vector

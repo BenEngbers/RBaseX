@@ -1,18 +1,17 @@
 Package: RBaseX
 Type: Package
 Title: 'BaseX' Client
-Version: 0.3.0
-Date: 2020-04-20
+Version: 0.9.2
+Date: 2021-12-05
 Authors@R: person("Ben","Engbers", email = "Ben.Engbers@Be-Logical.nl", role = c("aut","cre"))
-Description: 'BaseX' <http://basex.org> is a XML database engine and a compliant 'XQuery 3.1' processor with full support of 'W3C Update Facility'. This package is a full client-implementation of the client/server protocol for 'BaseX' and provides functionalities to create, manipulate and query on XML-data. 
+Description: 'BaseX' <https://basex.org> is a XML database engine and a compliant 'XQuery 3.1' processor with full support of 'W3C Update Facility'. This package is a full client-implementation of the client/server protocol for 'BaseX' and provides functionalities to create, manipulate and query on XML-data. 
 License: MIT + file LICENSE
 Encoding: UTF-8
-LazyData: true
-RoxygenNote: 7.1.0
-Imports: R6, RCurl, dplyr, openssl, stringr, magrittr, tibble, data.table
+RoxygenNote: 7.1.2
+Imports: R6, RCurl, pingr, rex, httr, stringr, dplyr, openssl, magrittr, tibble, data.table
 Suggests: testthat
 Author: Ben Engbers [aut, cre]
 Maintainer: Ben Engbers <Ben.Engbers@Be-Logical.nl>
 URL: https://github.com/BenEngbers/RBaseX
-SystemRequirements: Needs a running BaseX-instance.
+SystemRequirements: Needs a running BaseX server instance.
 Repository: CRAN
