@@ -1,6 +1,6 @@
 #' @title SocketClass
 #'
-#' @description Al methods that are used by BasexClient and QueryClass
+#' @description All methods that are used by BasexClient and QueryClass
 #'
 #' @export
 
@@ -44,7 +44,7 @@ SocketClass <- R6Class(
       tryCatch(
         {conn <- private$conn <- socketConnection(
           host = "localhost", port,
-          open = "w+b", server = FALSE, blocking = TRUE, encoding = "UTF-8", timeout = 1)
+          open = "w+b", server = FALSE, blocking = FALSE, encoding = "UTF-8")
         }, error = function(e) {
           stop("Cannot open the connection")
         }
@@ -62,7 +62,8 @@ SocketClass <- R6Class(
       # send username + code
       auth <- c(charToRaw(username), as.raw(0x00), code, as.raw(0x00))
       writeBin(auth, private$conn)
-      Accepted <- readBin(conn, what = "raw", n = 1) == 0x00
+      socketSelect(list(conn))
+      Accepted <- readBin(conn, what = "raw", n = 1) == 0
       if (!Accepted) {
         close(private$conn)
         stop("Access denied")
@@ -71,13 +72,20 @@ SocketClass <- R6Class(
   )
 )
 
+done <- function(rd, total_length) {
+  if (total_length == 0) {
+    finish <- FALSE
+  } else {
+    finish <- ifelse(length(rd == 1024), FALSE, TRUE)
+  }
+  return(finish)
+}
 readBin_ <- function(conn) {
-  chars_read <- raw(0)
-  rd <- readBin(conn, what = "raw", 1024)
-  while(length(rd) == 1024) {
-    chars_read <- c(chars_read, rd)
+  total_read <- rd <- as.raw(c())
+  socketSelect(list(conn))
+  while(!done(rd, length(total_read))) {
     rd <- readBin(conn, "raw", 1024)
+    total_read %<>% c(rd)
     }
-  if (length(rd) > 0) chars_read <- c(chars_read, rd)
-  return(chars_read)
+  return(total_read)
 }
