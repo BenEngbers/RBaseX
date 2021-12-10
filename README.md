@@ -4,7 +4,7 @@ BaseX R Client
 ## Revision history
 
 Version 1.0.0: 2021-12-10
-* Opening the socket as non-blocking and adapting the code for reading, execution time for the tests is reduced from 116 seconds to 2 secondes.
+* Open the socketConnection as non-blocking. Execution time for the tests has reduced from 116 seconds to 2 seconds.
 
 Version 0.9.2: 2021-12-05
 * Complete rewrite
