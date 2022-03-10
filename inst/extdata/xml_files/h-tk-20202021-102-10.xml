@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<officiele-publicatie xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://technische-documentatie.oep.overheid.nl/schema/op-xsd-2012-1">
+  <metadata>
+    <meta name="OVERHEIDop.externMetadataRecord" scheme="" content="https://zoek.officielebekendmakingen.nl/h-tk-20202021-102-10/metadata.xml" />
+  </metadata>
+  <handelingen>
+    <agendapunt>
+      <nr>10</nr>
+      <item-titel>Stemmingen Wijziging van de Tijdelijke wet verkiezingen covid-19 in verband met de afschaling van bijzondere maatregelen vanwege covid-19 bij verkiezingen</item-titel>
+      <onderwerp>
+        <al-groep>
+          <al>Aan de orde zijn <nadruk type="vet">de stemmingen</nadruk> in verband met het wetsvoorstel <nadruk type="vet">Wijziging van de Tijdelijke wet verkiezingen covid-19 in verband met de afschaling van bijzondere maatregelen vanwege covid-19 bij verkiezingen (</nadruk><extref soort="document" status="actief" doc="dossier/35887"><nadruk type="vet">35887</nadruk></extref><nadruk type="vet">)</nadruk>.</al>
+        </al-groep>
+      </onderwerp>
+      <tekst status="goed">
+        <al-groep>
+          <al>In stemming komt het amendement-Sneller (stuk nr. 7).</al>
+        </al-groep>
+      </tekst>
+      <spreekbeurt nieuw="nee">
+        <spreker>
+          <voorvoegsels>De</voorvoegsels>
+          <naam>
+            <achternaam>voorzitter</achternaam>
+          </naam>:</spreker>
+        <tekst status="goed">
+          <al-groep>
+            <al>Ik constateer dat de leden van de fracties van de SP, GroenLinks, BIJ1, Volt, DENK, de PvdA, de PvdD, Fractie Den Haan, D66, de VVD, het CDA, JA21, BBB, de PVV en Groep Van Haga voor dit amendement hebben gestemd en de leden van de overige fracties ertegen, zodat het is aangenomen.</al>
+          </al-groep>
+        </tekst>
+      </spreekbeurt>
+      <tekst status="goed">
+        <al-groep>
+          <al>In stemming komt het wetsvoorstel, zoals op onderdelen gewijzigd door de aanneming van het amendement-Sneller (stuk nr. 7).</al>
+        </al-groep>
+      </tekst>
+      <spreekbeurt nieuw="nee">
+        <spreker>
+          <voorvoegsels>De</voorvoegsels>
+          <naam>
+            <achternaam>voorzitter</achternaam>
+          </naam>:</spreker>
+        <tekst status="goed">
+          <al-groep>
+            <al>Ik constateer dat de leden van de fracties van de SP, GroenLinks, Volt, DENK, de PvdA, de PvdD, Fractie Den Haan, D66, de ChristenUnie, de VVD, de SGP, het CDA, BBB, de PVV en Groep Van Haga voor dit wetsvoorstel hebben gestemd en de leden van de overige fracties ertegen, zodat het is aangenomen.</al>
+          </al-groep>
+        </tekst>
+      </spreekbeurt>
+      <tekst status="goed">
+        <al-groep>
+          <al>Daarmee zijn we aan het einde gekomen van deze dag op deze nieuwe locatie. Ik wil de informateur nogmaals van harte bedanken.</al>
+        </al-groep>
+      </tekst>
+    </agendapunt>
+  </handelingen>
+</officiele-publicatie>

@@ -4,7 +4,7 @@
 \alias{SocketClass}
 \title{SocketClass}
 \description{
-Al methods that are used by BasexClient and QueryClass
+All methods that are used by BasexClient and QueryClass
 }
 \section{Methods}{
 \subsection{Public methods}{

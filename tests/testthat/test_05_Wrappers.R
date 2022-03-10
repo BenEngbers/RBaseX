@@ -3,24 +3,24 @@ test_that("Session, Database and QueryObjects are created and can be used", {
   Session <- NewBasexClient(user = "admin", password = "admin")
 
   SetIntercept(Session, FALSE)
-  expect_named(Execute(Session, "Info"))
+  expect_named(Command(Session, "Info"))
   expect_error(Query(Session))
   SetIntercept(Session, TRUE)
   expect_true(GetIntercept(Session))
-  Execute(Session, "Open TestOpen")        # Ensure that TestOpen does not exist
+  Command(Session, "Open TestOpen")        # Ensure that TestOpen does not exist
   if (GetSuccess(Session)) {
-    Execute(Session,"DROP DB TestOpen")
+    Command(Session,"DROP DB TestOpen")
   }
   SetIntercept(Session, FALSE)             # should be FALSE
-  expect_error(Execute(Session, "Open TestOpen"))
+  expect_error(Command(Session, "Open TestOpen"))
   SetIntercept(Session, TRUE)
-  Execute(Session, "Open TestOpen")
+  Command(Session, "Open TestOpen")
   if (!GetSuccess(Session)) {
     Create(Session, "TestOpen")
   }
-  Execute(Session, "Open TestOpen")
+  Command(Session, "Open TestOpen")
   expect_true(GetSuccess(Session))
-  Execute(Session, "Close")
+  Command(Session, "Close")
   Session$restore_intercept()             # should be FALSE
 
   RestoreIntercept(Session)
@@ -33,7 +33,7 @@ test_that("Session, Database and QueryObjects are created and can be used", {
   Query_3 <- Query(Session, "for $i in 1 to 2 return $i")
   expect_equal(GetSuccess(Session), TRUE)
 
-  Execute(Session,"DROP DB TestOpen")
+  Command(Session,"DROP DB TestOpen")
 
   # Cleanup
   Close(Query_2)
@@ -41,13 +41,37 @@ test_that("Session, Database and QueryObjects are created and can be used", {
   rm(Session)
 })
 
-test_that("'Full' and 'More' output should differ", {
+test_that("Full Query", {
   skip_unless_socket_available()
   Session <- NewBasexClient(user = "admin", password = "admin")
+
+  Query_6 <- Query(Session, "collection('/TestDB/Test.xml')")
+  fullResult <- Full(Query_6)
+  expect_length(fullResult$fullResult, 6)
+  expect_equal(fullResult$fullResult[[1]][[2]], "/TestDB/Test.xml")
 
   Zero_results <- Query(Session, "collection('TestDB/Test')")
   fullResult <- Full(Zero_results)
   expect_length(fullResult$fullResult, 0)
+
+  # Cleanup
+  Close(Query_6)
+  Close(Zero_results)
+  rm(Session)
+})
+
+test_that("More and iterate", {
+  skip_unless_socket_available()
+  Session <- NewBasexClient(user = "admin", password = "admin")
+
+  Query_iter <- Query(Session, "collection('/TestDB/Test.xml')")
+  Zero_results <- Query(Session, "collection('TestDB/Test')")
+
+  iterResult <- c()
+  while (More(Query_iter)) {
+    iterResult <- c(iterResult, Next(Query_iter))
+  }
+  expect_length(iterResult, 3)
 
   iterResult <- c()
   while (More(Zero_results)) {
@@ -55,19 +79,9 @@ test_that("'Full' and 'More' output should differ", {
   }
   expect_length(iterResult, 0)
 
-  Query_1 <- Query(Session, "collection('/TestDB/Test.xml')")
-  fullResult <- Full(Query_1)
-  expect_length(fullResult$fullResult, 6)
-  expect_equal(fullResult$fullResult[[1]][[2]], "/TestDB/Test.xml")
-
-  iterResult <- c()
-  while (More(Query_1)) {
-    iterResult <- c(iterResult, Next(Query_1))
-    }
-  expect_length(iterResult, 3)
-
   # Cleanup
-  Close(Query_1)
+  Close(Query_iter)
+  Close(Zero_results)
   rm(Session)
 })
 
@@ -79,12 +93,12 @@ test_that("Query is executed and Updating() is false", {
   expect_equal(Session$get_success(), TRUE)
   Query_2 <- Query(Session, "for $i in 3 to 4 return $i")
   expect_equal(Session$get_success(), TRUE)
-  res <- Execute(Query_1)
+  res <- Command(Query_1)
   info <- Info(Query_1)
   expect_length(res[[1]], 2)
   expect_equal(substr(info$Info, 1, 5), "Query")
 
-  res <- Execute(Query_2)
+  res <- Command(Query_2)
   t2 <- c("3", "4")
   expect_equal(t2, res$Result)
 
@@ -104,12 +118,12 @@ test_that("Binding function binds variables", {
   Query_1 <- Query(Session,
                    "declare variable $name external; for $i in 1 to 2 return element { $name } { $i }")
   Bind(Query_1, "$name", "number")
-  expect_output(str(Execute(Query_1)), '"<number>1</number>" "<number>2</number>"')
+  expect_output(str(Command(Query_1)), '"<number>1</number>" "<number>2</number>"')
 
   Query_2 <- Query(Session,
                    "declare variable $name external; for $i in 3 to 4 return element { $name } { $i }")
   Bind(Query_2, "$name", "number", "xs:string")
-  expect_output(str(Execute(Query_2)), '"<number>3</number>" "<number>4</number>"')
+  expect_output(str(Command(Query_2)), '"<number>3</number>" "<number>4</number>"')
 
   Query_3 <- Query(Session, "declare variable $name external;
     for $t in collection('TestDB/Books')/book
@@ -117,7 +131,7 @@ test_that("Binding function binds variables", {
     return $t/@title/string()")
   names <- list("Walmsley", "Wickham")
   Bind(Query_3, "$name", names)
-  expect_output(str(Execute(Query_3)), '"XQuery" "Advanced R"')
+  expect_output(str(Command(Query_3)), '"XQuery" "Advanced R"')
 
   Query_4 <- Query(Session, "declare variable $name external;
     for $t in collection('TestDB/Books')/book
@@ -125,7 +139,7 @@ test_that("Binding function binds variables", {
     return $t/@title/string()")
   types <- list("xs:string", "xs:string")
   Bind(Query_4, "$name", names, types)
-  expect_output(str(Execute(Query_4)), '"XQuery" "Advanced R"')
+  expect_output(str(Command(Query_4)), '"XQuery" "Advanced R"')
 
   # Cleanup
   Close(Query_1)
@@ -142,7 +156,7 @@ test_that("Context function works", {
   ctxt_query <- Query(Session, "for $t in .//text() return string-length($t)")
   ctxt_txt   <- paste0("<xml>", "<txt>Hi</txt>", "<txt>World</txt>", "</xml>")
   t <- Context(ctxt_query, ctxt_txt, type = "document-node()")
-  expect_output(str(Execute(ctxt_query)), '"2" "5"')
+  expect_output(str(Command(ctxt_query)), '"2" "5"')
 
   # Cleanup
   Close(ctxt_query)
@@ -153,14 +167,14 @@ test_that("Binary content is handled correctly", {
   skip_unless_socket_available()
   Session <- BasexClient$new("localhost", 1984L, username = "admin", password = "admin")
 
-  Execute(Session, "Check TestDB")
-  bais <- as.raw(c(252,253,254,255,255,254,255))
+  Command(Session, "Check TestDB")
+  bais <- as.raw(c(252, 253 ,254, 255, 255, 254, 255, 000, 255, 252, 253 ,254, 255, 255, 254, 255, 000, 255))
   Store(Session, "test.bin", bais)
 
-  baos <- Execute(Session, "retrieve test.bin")
-  expect_equal(baos$result, as.raw(c(252, 253 ,254, 255, 255, 254, 255)))
+  baos <- Command(Session, "retrieve test.bin")
+  expect_equal(baos$result, as.raw(c(252, 253 ,254, 255, 255, 254, 255, 000, 255, 252, 253 ,254, 255, 255, 254, 255, 000, 255)))
   # Cleanup
-  Execute(Session, "Close")
+  Command(Session, "Close")
   rm(Session)
 })
 
@@ -169,11 +183,11 @@ test_that("Add and Add/Replace is handled", {
   skip_if_offline()
   Session <- BasexClient$new("localhost", 1984L, username = "admin", password = "admin")
 
-  Execute(Session, "Check TestDB")
+  Command(Session, "Check TestDB")
   SetIntercept(Session, TRUE)
-  Execute(Session, "delete Add_Char")
-  Execute(Session, "delete Add_XML")
-  Execute(Session, "delete Add_URL")
+  Command(Session, "delete Add_Char")
+  Command(Session, "delete Add_XML")
+  Command(Session, "delete Add_URL")
   RestoreIntercept(Session)
 
   # Add a length-1 character vector
@@ -190,15 +204,15 @@ test_that("Add and Add/Replace is handled", {
   Simple <- input_to_raw("https://raw.githubusercontent.com/BaseXdb/basex/master/basex-api/src/test/resources/first.xml")
   Add(Session, path = Path, Simple)
 
-  # Add/Replace ----
+  # Add/Replace
   Rep <- "<x>Hi Friends!</x>"
   Replace(Session, Path, Rep)
 
   # Check results
-  result <- Session$Execute("xquery db:list('TestDB')")[[1]]
-  expect_equal(length(Session$Execute("xquery db:list('TestDB')")[[1]][[1]]), 8)
-  expect_equal(Session$Execute("xquery doc('TestDB/Add_URL')/x/text()")[[1]][[1]], "Hi Friends!")
+  result <- Session$Command("xquery db:list('TestDB')")[[1]]
+  expect_equal(length(Session$Command("xquery db:list('TestDB')")[[1]][[1]]), 8)
+  expect_equal(Session$Command("xquery doc('TestDB/Add_URL')/x/text()")[[1]][[1]], "Hi Friends!")
   # Cleanup
-  Execute(Session, "Close")
+  Command(Session, "Close")
   rm(Session)
 })

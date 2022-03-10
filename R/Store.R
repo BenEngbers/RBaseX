@@ -13,6 +13,9 @@
 #' @description Stores a binary resource in the opened database.
 #'
 #' @details Use the database-command \emph{retrieve} to retrieve the resource.
+#'     The input can be a UTF-8 encoded XML document, a binary resource, or any other data (such as JSON or CSV)
+#'     that can be successfully converted to a resource by the server.
+
 #'     This method returns \emph{self} invisibly, thus making it possible to chain together multiple method calls.
 #'
 #' @examples

@@ -14,7 +14,7 @@ test_that("getSuccess functions", {
 
   succ <- Session$get_success()
   expect_null(succ)
-  Session$Execute("info")
+  Session$Command("info")
   expect_equal(Session$get_success(), TRUE)
   # Cleanup
   rm(Session)

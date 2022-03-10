@@ -24,7 +24,8 @@ A list with two items
 Creates a new database with the specified name and input (may be empty).
 }
 \details{
-Initial content can be offered as string, URL or file.
+The input can be a UTF-8 encoded XML document, a binary resource, or any other data (such as JSON or CSV)
+    that can be successfully converted to a resource by the server.
     'Check' is a convenience command that combines OPEN and CREATE DB: If a database
     with the name input exists, and if there is no existing file or directory with the
     same name that has a newer timestamp, the database is opened. Otherwise, a new

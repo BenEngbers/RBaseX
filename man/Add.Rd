@@ -24,8 +24,8 @@ A list with two items
 Adds a new resource to the opened database.
 }
 \details{
-The 'input' can be a length-1 character vector which describes an element,
-    a file-descriptor, an URL or a stream.
+The input can be a UTF-8 encoded XML document, a binary resource, or any other data (such as JSON or CSV)
+    that can be successfully converted to a resource by the server.
     The utility-function \emph{input_to_raw} can be used to convert an arbitrary
     character vector to a stream.
     This method returns \emph{self} invisibly, thus making it possible to chain together multiple method calls.

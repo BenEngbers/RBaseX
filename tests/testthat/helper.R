@@ -1,5 +1,6 @@
 library(RBaseX)
 library(testthat)
+library(glue)
 
 skip_unless_socket_available <- function() {
     tryCatch({

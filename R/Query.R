@@ -5,7 +5,11 @@
 #'
 #' @return Query_ID
 #'
-#' @description Creates a new query instance and returns its id.
+#' @description Creates a new query instance and returns it's id.
+#'
+#' @details
+#'
+#'     If paste0() is used to create a multi-line statement, the lines must be separeted by a space or a newline \\n-character.
 #'
 #' @examples
 #' \dontrun{

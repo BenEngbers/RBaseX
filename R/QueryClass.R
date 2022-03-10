@@ -26,7 +26,8 @@ QueryClass <- R6Class(
     #' @description Executes a query.
     ExecuteQuery = function() {
       exec <- c(as.raw(0x05), private$raw_id)
-      response <- private$sock$handShake(exec) %>% split_Response()
+      response <- private$sock$handShake(exec)
+      response %<>% split_Response()
 
       names(response) <- c("Result", "success")
       response %<>% private$handle_response()
@@ -94,6 +95,7 @@ QueryClass <- R6Class(
     #'     prefixed by the 'XDM' (Xpath Data Model) Meta Data <https://www.xdm.org/>.
     Full = function() {
       exec <- c(as.raw(0x1F), private$raw_id)
+
       response <- private$sock$handShake(exec)
 
       errors <- which(response == as.raw(c("01")))
@@ -103,7 +105,7 @@ QueryClass <- R6Class(
         response <- split_Response(response)
       } else {
         resp_list <- head(response, -3) %>% strip_CR() %>% strip_FF()
-        if (length(response) == 2) {                       # Read was succesfull but had no results
+        if (length(response) == 2) {            # Read was successfull but returned no results
           result <- list()
         } else {
           zero <- which(resp_list == 00)
@@ -121,24 +123,7 @@ QueryClass <- R6Class(
     #' @description Indicates if there are any other results in the query-result.
     More = function() {
       if (is.null(private$cache)) {                        # The cache has to be filled
-        exec <- c(as.raw(0x04), private$raw_id)
-        response <- private$sock$handShake(exec)
-
-        private$pos <- 0
-        if (identical(response, as.raw(c(0,0)))) {
-          private$cache <- list()
-        } else {
-          if (is.PLATFORM("Windows")) response %<>%  strip_CR()
-          resp_list <- head(response, -3)
-
-          result <- c()
-          zero <- which(resp_list == 00)
-          sta <- c(1, zero +1); sto <- c(zero -1, length(resp_list))
-          result <- mapply(function(start, stop, vec) {vec[start:stop]}, sta, sto, MoreArgs = list(resp_list) , SIMPLIFY = FALSE)
-          result %<>% lapply(function(x) {unlist(list(head(x, 1) %>% as.character(), tail(x, -1) %>% rawToChar()))})
-
-          private$cache <- result
-        }
+        result <- private$Results()
       }
       if ( length(private$cache) > private$pos) return(TRUE)
       else {
@@ -206,8 +191,19 @@ QueryClass <- R6Class(
     raw_id = NULL,
     cache = NULL,
     pos = NULL,
-    # req_result = NULL,
 
+    Results = function() {
+      exec <- c(as.raw(0x04), private$raw_id)
+      response <- private$sock$handShake(exec) %>% split_Response()
+      if (tail(response,1)[[1]]) {
+        result <- lapply(head(response, -2), function(x) c(charToRaw(substr(x,1,1)), substr(x,2,nchar(x))))
+        private$cache <- result
+        private$pos <- 0
+        return(result)
+      } else {
+        stop(tail(response, length(response) -1))
+      }
+    },
     handle_response = function(Response) {
       private$parent$set_success(Response$success)
       Response[[1]]  %<>% strsplit("\n")

@@ -1,4 +1,4 @@
-#' Execute
+#' Command
 #'
 #' @param ... The command or query to be executed.
 #'     When used to execute a command, a SessionID and a string which contains the command, are to be passed.
@@ -15,27 +15,33 @@
 #'
 #' @description Executes a database command or a query.
 #'
-#' @details The 'Execute' command is obsolete  and has been renamed to 'Command'.
-#'     'Execute' is being kept as convenience.
+#' @details For a list of database commands see \url{https://docs.basex.org/wiki/Commands}
+#'
+#'     'BaseX' can be used in a Standard mode or Query mode.
+#'
+#'     In the standard mode of the Clients, a database command can be sent to the server
+#'     using the Command() function of the Session.
+#'     The query mode of the Clients allows you to bind external variables to a query and evaluate the query in
+#'     an iterative manner.
 #'
 #' @examples
 #' \dontrun{
 #' Session <- NewBasexClient(user = <username>, password = "<password>")
-#' print(Execute(Session, "info")$info)
+#' print(Command(Session, "info")$info)
 #'
 #' query_txt <- paste("for $i in 1 to 2", "return <xml>Text { $i }</xml>", sep = " ")
 #' query_obj <- Query(Session, query_txt)
-#' print(Execute(query_obj))
+#' print(Command(query_obj))
 #' }
 #'
 #' @export
-Execute <- function(...) {
+Command <- function(...) {
   arguments <- list(...)
   classType <- unlist(class(arguments[[1]]))[1]
   if ( classType == "BasexClient") {
     session <- arguments[[1]]
     comm <- arguments[[2]]
-    return(session$Execute(comm))
+    return(session$Command(comm))
   } else {
     query_obj <- arguments[[1]][[1]]
     return(query_obj$ExecuteQuery())

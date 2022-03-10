@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<officiele-publicatie xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://technische-documentatie.oep.overheid.nl/schema/op-xsd-2012-1">
+  <metadata>
+    <meta name="OVERHEIDop.externMetadataRecord" scheme="" content="https://zoek.officielebekendmakingen.nl/h-tk-20202021-102-5/metadata.xml" />
+  </metadata>
+  <handelingen>
+    <agendapunt>
+      <nr>5</nr>
+      <item-titel>Mededelingen</item-titel>
+      <onderwerp>
+        <al />
+      </onderwerp>
+      <spreekbeurt nieuw="nee">
+        <spreker>
+          <voorvoegsels>De</voorvoegsels>
+          <naam>
+            <achternaam>voorzitter</achternaam>
+          </naam>:</spreker>
+        <tekst status="goed">
+          <al-groep>
+            <al>Ik deel aan de Kamer mee dat er geen afmeldingen zijn.</al>
+          </al-groep>
+          <al-groep>
+            <al>Deze mededeling wordt voor kennisgeving aangenomen.</al>
+          </al-groep>
+        </tekst>
+      </spreekbeurt>
+      <spreekbeurt nieuw="nee">
+        <spreker>
+          <voorvoegsels>De</voorvoegsels>
+          <naam>
+            <achternaam>voorzitter</achternaam>
+          </naam>:</spreker>
+        <tekst status="goed">
+          <al-groep>
+            <al>Binnengekomen is een bericht van de leden Yeşilgöz-Zegerius, Wiersma en Van Weyenberg waarin zij hebben aangegeven hun Kamerlidmaatschap te beëindigen per 2 september 2021.</al>
+          </al-groep>
+          <al-groep>
+            <al>Voorts is binnengekomen een bericht van het lid Van Ark dat zij haar Kamerlidmaatschap beëindigt per 3 september 2021.</al>
+          </al-groep>
+          <al-groep>
+            <al>Tot slot deel ik aan de Kamer mee dat de heer Van der Molen tijdelijk verlof is verleend tot en met 27 december 2021.</al>
+          </al-groep>
+        </tekst>
+      </spreekbeurt>
+    </agendapunt>
+  </handelingen>
+</officiele-publicatie>

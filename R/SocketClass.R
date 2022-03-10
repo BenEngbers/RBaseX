@@ -73,19 +73,21 @@ SocketClass <- R6Class(
 )
 
 done <- function(rd, total_length) {
+  finish <- TRUE
   if (total_length == 0) {
     finish <- FALSE
   } else {
-    finish <- ifelse(length(rd == 1024), FALSE, TRUE)
+    i <- length(rd)
+    if (i ==1024) finish <- FALSE
   }
   return(finish)
 }
 readBin_ <- function(conn) {
   total_read <- rd <- as.raw(c())
-  socketSelect(list(conn))
   while(!done(rd, length(total_read))) {
+    socketSelect(list(conn))
     rd <- readBin(conn, "raw", 1024)
-    total_read %<>% c(rd)
+    total_read <- c(total_read,rd)
     }
   return(total_read)
 }

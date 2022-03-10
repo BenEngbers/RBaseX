@@ -1,6 +1,10 @@
 # R client for 'BaseX'.
 # Works with BaseX 8.0 and later
 
+# ------------
+# 20220131 Added invisible(self) to Execute
+# ------------
+
 # (C) Ben Engbers
 
 #' @title BasexClient
@@ -25,14 +29,26 @@ BasexClient <- R6Class(
     #' @description Execute a command
     #' @param command Command
     #' @details For a list of database commands see \url{https://docs.basex.org/wiki/Commands}
-    Execute = function(command) {
+    Command = function(command) {
       exec <- c(raw(), addVoid(command))
       response <- private$sock$handShake(exec) %>% split_Response()
 
-      if (class(response[[1]]) == "character") response[[1]] %<>% strsplit("\n")
+      # if (class(response[[1]]) == "character") response[[1]] %<>% strsplit("\n")
+      if (inherits(response[[1]], "character")) response[[1]] %<>% strsplit("\n")
       response[[2]] %<>% clean_Response()
       names(response) <- c("result", "info", "success")
       return(private$handle_response(response))
+
+      invisible(self)
+    },
+
+    #' @description Execute a command
+    #' @param command Command
+    #' @details For a list of database commands see \url{https://docs.basex.org/wiki/Commands}.
+    #'    This function is replaced by 'Command' and is obsolete.
+    Execute = function(command) {
+      return(self$Command(command))
+      invisible(self)
     },
 
     #' @description Create a new query-object
@@ -41,7 +57,7 @@ BasexClient <- R6Class(
     #' @param query_string Query-string
     #' @return ID for the created query-object
     Query = function(query_string) {
-      if (missing(query_string)) {
+      if (missing(query_string) || identical(query_string, "")) {
         self$set_success(FALSE)
         if (self$get_intercept()) {
           return(list(queryObject = NULL, success = self$get_success()))
@@ -67,8 +83,7 @@ BasexClient <- R6Class(
     #' @param input Initial content, Optional
     Create = function(name, input) {
       if (missing(input)) input <- ""
-
-      exec <- c(as.raw(0x08), addVoid(name), addVoid(input))
+      exec <- c(as.raw(0x08), addVoid(name), addVoid(input_to_raw(input)))
       response <- private$sock$handShake(exec) %>% split_Response()
 
       response[[1]] %<>% strsplit("\n")
@@ -100,7 +115,7 @@ BasexClient <- R6Class(
     #' @param path Path
     #' @param input File, directory or XML-string
     Replace = function(path, input) {
-      exec <- c(as.raw(0x0C), addVoid(path), addVoid(input))
+      exec <- c(as.raw(0x0C), addVoid(path), addVoid(input_to_raw(input)))
       response <- private$sock$handShake(exec) %>% split_Response()
 
       response[[1]] %<>% strsplit("\n")
@@ -118,7 +133,7 @@ BasexClient <- R6Class(
     Store = function(path, input) {
       input %<>% add_FF()
 
-      exec <- c(as.raw(0x0D), addVoid(path), addVoid(input))
+      exec <- c(as.raw(0x0D), addVoid(path), addVoid(input_to_raw(input)))
       response <- private$sock$handShake(exec) %>% split_Response()
 
       response[[1]] %<>% strsplit("\n")

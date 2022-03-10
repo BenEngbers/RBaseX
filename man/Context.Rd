@@ -15,6 +15,7 @@ Context(query_obj, value, type)
 }
 \description{
 Binds a value to the context. The type will be ignored if the string is empty.
+The function returns no value.
 }
 \details{
 The type that is provided to the context, should be one of the standard-types.

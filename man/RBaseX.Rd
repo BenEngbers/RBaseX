@@ -40,6 +40,7 @@ The client can be used in 'standard' mode and in 'query' mode.
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{BasexClient$new()}}
+\item \href{#method-Command}{\code{BasexClient$Command()}}
 \item \href{#method-Execute}{\code{BasexClient$Execute()}}
 \item \href{#method-Query}{\code{BasexClient$Query()}}
 \item \href{#method-Create}{\code{BasexClient$Create()}}
@@ -73,6 +74,27 @@ Initialize a new client-session
 }
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Command"></a>}}
+\if{latex}{\out{\hypertarget{method-Command}{}}}
+\subsection{Method \code{Command()}}{
+Execute a command
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{BasexClient$Command(command)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{command}}{Command}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Details}{
+For a list of database commands see \url{https://docs.basex.org/wiki/Commands}
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Execute"></a>}}
 \if{latex}{\out{\hypertarget{method-Execute}{}}}
 \subsection{Method \code{Execute()}}{
@@ -89,7 +111,8 @@ Execute a command
 \if{html}{\out{</div>}}
 }
 \subsection{Details}{
-For a list of database commands see \url{https://docs.basex.org/wiki/Commands}
+For a list of database commands see \url{https://docs.basex.org/wiki/Commands}.
+   This function is replaced by 'Command' and is obsolete.
 }
 
 }

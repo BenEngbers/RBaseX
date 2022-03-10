@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<officiele-publicatie xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://technische-documentatie.oep.overheid.nl/schema/op-xsd-2012-1">
+  <metadata>
+    <meta name="OVERHEIDop.externMetadataRecord" scheme="" content="https://zoek.officielebekendmakingen.nl/h-tk-20202021-102-11/metadata.xml" />
+  </metadata>
+  <handelingen>
+    <agendapunt>
+      <nr>11</nr>
+      <item-titel>Sluiting</item-titel>
+      <onderwerp>
+        <al />
+      </onderwerp>
+      <tekst />
+      <tekst status="goed">
+        <al-groep>
+          <al>Sluiting 22.34 uur.</al>
+        </al-groep>
+      </tekst>
+    </agendapunt>
+  </handelingen>
+</officiele-publicatie>

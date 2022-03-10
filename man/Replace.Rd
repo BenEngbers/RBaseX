@@ -24,7 +24,9 @@ A list with two items
 Replaces a resource with the specified input.
 }
 \details{
-This method returns \emph{self} invisibly, thus making it possible to chain together multiple method calls.
+The input can be a UTF-8 encoded XML document, a binary resource, or any other data (such as JSON or CSV)
+    that can be successfully converted to a resource by the server.
+    This method returns \emph{self} invisibly, thus making it possible to chain together multiple method calls.
 }
 \examples{
 \dontrun{

@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<officiele-publicatie xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://technische-documentatie.oep.overheid.nl/schema/op-xsd-2012-1">
+  <metadata>
+    <meta name="OVERHEIDop.externMetadataRecord" scheme="" content="https://zoek.officielebekendmakingen.nl/h-tk-20202021-102-9/metadata.xml" />
+  </metadata>
+  <handelingen>
+    <agendapunt>
+      <nr>9</nr>
+      <item-titel>Stemmingen moties Eindverslag van de informateur</item-titel>
+      <onderwerp>
+        <al-groep>
+          <al>Aan de orde zijn <nadruk type="vet">de stemmingen over moties</nadruk>, ingediend bij het debat over <nadruk type="vet">het eindverslag van de informateur</nadruk>,</al>
+        </al-groep>
+        <al-groep>
+          <al>te weten:</al>
+        </al-groep>
+        <al-groep>
+          <lijst>
+            <li>
+              <li.nr>-</li.nr>
+              <al>de motie-Rutte over aanwijzen van de heer J.W. Remkes als informateur met als opdracht uitvoering te geven aan het advies in het verslag van informateur Hamer rekening houdend met in het verslag geschetste overwegingen (<extref soort="document" status="actief" doc="kst-35788-47">35788</extref>, nr. <extref soort="document" status="actief" doc="kst-35788-47">47</extref>);</al>
+            </li>
+            <li>
+              <li.nr>-</li.nr>
+              <al>de motie-Wilders over ontbinden van de Kamer en het uitschrijven van nieuwe verkiezingen (<extref soort="document" status="actief" doc="kst-35788-48">35788</extref>, nr. <extref soort="document" status="actief" doc="kst-35788-48">48</extref>);</al>
+            </li>
+            <li>
+              <li.nr>-</li.nr>
+              <al>de motie-Wilders over uitspreken dat het onacceptabel is dat een demissionair kabinet ingrijpende besluiten neemt (<extref soort="document" status="actief" doc="kst-35788-49">35788</extref>, nr. <extref soort="document" status="actief" doc="kst-35788-49">49</extref>);</al>
+            </li>
+            <li>
+              <li.nr>-</li.nr>
+              <al>de motie-Van Houwelingen c.s. over serieus werk maken van het onderzoeken van een zakenkabinet (<extref soort="document" status="actief" doc="kst-35788-50">35788</extref>, nr. <extref soort="document" status="actief" doc="kst-35788-50">50</extref>);</al>
+            </li>
+            <li>
+              <li.nr>-</li.nr>
+              <al>de motie-Van der Plas/Van Haga over uitschrijven van nieuwe verkiezingen als er uiterlijk 1 november 2021 geen nieuw kabinet is gevormd (<extref soort="document" status="actief" doc="kst-35788-51">35788</extref>, nr. <extref soort="document" status="actief" doc="kst-35788-51">51</extref>);</al>
+            </li>
+            <li>
+              <li.nr>-</li.nr>
+              <al>de motie-Van Haga/Van der Plas over zich slechts richten op de inhoud van de partijprogramma's van mogelijke coalitiepartners (<extref soort="document" status="actief" doc="kst-35788-52">35788</extref>, nr. <extref soort="document" status="actief" doc="kst-35788-52">52</extref>);</al>
+            </li>
+            <li>
+              <li.nr>-</li.nr>
+              <al>de motie-Van Haga/Van der Plas over onderzoeken van een minderheidskabinet van VVD en CDA (<extref soort="document" status="actief" doc="kst-35788-53">35788</extref>, nr. <extref soort="document" status="actief" doc="kst-35788-53">53</extref>).</al>
+            </li>
+          </lijst>
+        </al-groep>
+      </onderwerp>
+      <tekst status="goed">
+        <al-groep>
+          <al>(Zie vergadering van heden.)</al>
+        </al-groep>
+      </tekst>
+      <tekst status="goed">
+        <al-groep>
+          <al>In stemming komt de motie-Rutte (<extref soort="document" status="actief" doc="kst-35788-47">35788</extref>, nr. <extref soort="document" status="actief" doc="kst-35788-47">47</extref>).</al>
+        </al-groep>
+      </tekst>
+      <spreekbeurt nieuw="nee">
+        <spreker>
+          <voorvoegsels>De</voorvoegsels>
+          <naam>
+            <achternaam>voorzitter</achternaam>
+          </naam>:</spreker>
+        <tekst status="goed">
+          <al-groep>
+            <al>Ik constateer dat de leden van de fracties van Volt, Fractie Den Haan, D66, de ChristenUnie, de VVD, de SGP, het CDA, JA21 en Groep Van Haga voor deze motie hebben gestemd en de leden van de overige fracties ertegen, zodat zij is aangenomen.</al>
+          </al-groep>
+        </tekst>
+      </spreekbeurt>
+      <tekst status="goed">
+        <al-groep>
+          <al>In stemming komt de motie-Wilders (<extref soort="document" status="actief" doc="kst-35788-48">35788</extref>, nr. <extref soort="document" status="actief" doc="kst-35788-48">48</extref>).</al>
+        </al-groep>
+      </tekst>
+      <spreekbeurt nieuw="nee">
+        <spreker>
+          <voorvoegsels>De</voorvoegsels>
+          <naam>
+            <achternaam>voorzitter</achternaam>
+          </naam>:</spreker>
+        <tekst status="goed">
+          <al-groep>
+            <al>Ik constateer dat de leden van de fracties van de PvdD, BBB en de PVV voor deze motie hebben gestemd en de leden van de overige fracties ertegen, zodat zij is verworpen.</al>
+          </al-groep>
+        </tekst>
+      </spreekbeurt>
+      <tekst status="goed">
+        <al-groep>
+          <al>In stemming komt de motie-Wilders (<extref soort="document" status="actief" doc="kst-35788-49">35788</extref>, nr. <extref soort="document" status="actief" doc="kst-35788-49">49</extref>).</al>
+        </al-groep>
+      </tekst>
+      <spreekbeurt nieuw="nee">
+        <spreker>
+          <voorvoegsels>De</voorvoegsels>
+          <naam>
+            <achternaam>voorzitter</achternaam>
+          </naam>:</spreker>
+        <tekst status="goed">
+          <al-groep>
+            <al>Ik constateer dat de leden van de fracties van JA21, BBB, de PVV, FVD en Groep Van Haga voor deze motie hebben gestemd en de leden van de overige fracties ertegen, zodat zij is verworpen.</al>
+          </al-groep>
+        </tekst>
+      </spreekbeurt>
+      <tekst status="goed">
+        <al-groep>
+          <al>In stemming komt de motie-Van Houwelingen c.s. (<extref soort="document" status="actief" doc="kst-35788-50">35788</extref>, nr. <extref soort="document" status="actief" doc="kst-35788-50">50</extref>).</al>
+        </al-groep>
+      </tekst>
+      <spreekbeurt nieuw="nee">
+        <spreker>
+          <voorvoegsels>De</voorvoegsels>
+          <naam>
+            <achternaam>voorzitter</achternaam>
+          </naam>:</spreker>
+        <tekst status="goed">
+          <al-groep>
+            <al>Ik constateer dat de leden van de fracties van JA21, BBB, FVD en Groep Van Haga voor deze motie hebben gestemd en de leden van de overige fracties ertegen, zodat zij is verworpen.</al>
+          </al-groep>
+        </tekst>
+      </spreekbeurt>
+      <tekst status="goed">
+        <al-groep>
+          <al>In stemming komt de motie-Van der Plas/Van Haga (<extref soort="document" status="actief" doc="kst-35788-51">35788</extref>, nr. <extref soort="document" status="actief" doc="kst-35788-51">51</extref>).</al>
+        </al-groep>
+      </tekst>
+      <spreekbeurt nieuw="nee">
+        <spreker>
+          <voorvoegsels>De</voorvoegsels>
+          <naam>
+            <achternaam>voorzitter</achternaam>
+          </naam>:</spreker>
+        <tekst status="goed">
+          <al-groep>
+            <al>Ik constateer dat de leden van de fracties van BIJ1, JA21, BBB, FVD en Groep Van Haga voor deze motie hebben gestemd en de leden van de overige fracties ertegen, zodat zij is verworpen.</al>
+          </al-groep>
+        </tekst>
+      </spreekbeurt>
+      <tekst status="goed">
+        <al-groep>
+          <al>In stemming komt de motie-Van Haga/Van der Plas (<extref soort="document" status="actief" doc="kst-35788-52">35788</extref>, nr. <extref soort="document" status="actief" doc="kst-35788-52">52</extref>).</al>
+        </al-groep>
+      </tekst>
+      <spreekbeurt nieuw="nee">
+        <spreker>
+          <voorvoegsels>De</voorvoegsels>
+          <naam>
+            <achternaam>voorzitter</achternaam>
+          </naam>:</spreker>
+        <tekst status="goed">
+          <al-groep>
+            <al>Ik constateer dat de leden van de fracties van de SP, GroenLinks, BIJ1, Volt, DENK, de PvdA, de PvdD, Fractie Den Haan, D66, JA21, BBB en Groep Van Haga voor deze motie hebben gestemd en de leden van de overige fracties ertegen, zodat zij is verworpen.</al>
+          </al-groep>
+        </tekst>
+      </spreekbeurt>
+      <tekst status="goed">
+        <al-groep>
+          <al>In stemming komt de motie-Van Haga/Van der Plas (<extref soort="document" status="actief" doc="kst-35788-53">35788</extref>, nr. <extref soort="document" status="actief" doc="kst-35788-53">53</extref>).</al>
+        </al-groep>
+      </tekst>
+      <spreekbeurt nieuw="nee">
+        <spreker>
+          <voorvoegsels>De</voorvoegsels>
+          <naam>
+            <achternaam>voorzitter</achternaam>
+          </naam>:</spreker>
+        <tekst status="goed">
+          <al-groep>
+            <al>Ik constateer dat de leden van de fracties van de SGP, JA21, BBB en Groep Van Haga voor deze motie hebben gestemd en de leden van de overige fracties ertegen, zodat zij is verworpen.</al>
+          </al-groep>
+        </tekst>
+      </spreekbeurt>
+    </agendapunt>
+  </handelingen>
+</officiele-publicatie>

@@ -8,16 +8,15 @@ test_that("Query-object is created and executed", {
   Session$Query()                   # A string must be provided
   expect_equal(Session$get_success(), FALSE)
 
-  Query_1 <- Session$Query("for $i in 1 to 2 return $i")
+  Query_1 <- Session$Query(paste("for $i in 1 to 2", "return $i", sep = " "))
   expect_equal(Session$get_success(), TRUE)
   res <- Query_1$queryObject$ExecuteQuery()
   t1 <- c("1", "2")
   expect_equal(t1, res$Result)
 
-  Query_2 <- Session$Query("for $i in 3 to 4 return i")
+  Query_2 <- Session$Query(paste("for $i in 3 to 4", "return i", sep = " "))
   expect_equal(Session$get_success(), TRUE)
   res <- Query_2$queryObject$ExecuteQuery()
-  # expect_equal(grep("XPD", res[[1]][2]), 1)
   expect_equal(Session$get_success(), TRUE)
   # Cleanup
   Query_1$queryObject$Close()
