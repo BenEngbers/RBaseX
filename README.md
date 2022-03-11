@@ -3,6 +3,11 @@ BaseX R Client
 
 ## Revision history
 
+Version 1.1.1: 2022-03-10
+* Bug-fixes
+* Added tests
+* Renamed 'Execute' command to 'Command' for beter alignment to the server protocol.
+
 Version 1.0.0: 2021-12-10
 * Open the socketConnection as non-blocking. Execution time for the tests has reduced from 116 seconds to 2 seconds.
 
