@@ -1,6 +1,6 @@
 test_that("Query-object is created and executed", {
   skip_unless_socket_available()
-  Session <- BasexClient$new("localhost", 1984L, username = "admin", password = "admin")
+  Session <- BasexClient$new("localhost", 1984L, username = "Test", password = "testBaseX")
 
   Session$set_intercept(FALSE)
   expect_error(Session$Query())

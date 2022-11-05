@@ -1,7 +1,7 @@
 test_that("Create Single File", {
   skip_unless_socket_available()
 
-  Session <- BasexClient$new("localhost", 1984L, username = "admin", password = "admin")
+  Session <- BasexClient$new("localhost", 1984L, username = "Test", password = "testBaseX")
   Session$set_intercept(TRUE)
   Session$set_success(FALSE)  # Initialize success
 
@@ -23,7 +23,7 @@ test_that("Create Single File", {
 
 test_that("Parl_Test is created and queried", {
   skip_unless_socket_available()
-  Session <- BasexClient$new("localhost", 1984L, username = "admin", password = "admin")
+  Session <- BasexClient$new("localhost", 1984L, username = "Test", password = "testBaseX")
 
   #DB_Name <- "Parliament"
   DB_Name <- "Parl_Test"

@@ -1,6 +1,6 @@
 test_that("Session, Database and QueryObjects are created and can be used", {
   skip_unless_socket_available()
-  Session <- NewBasexClient(user = "admin", password = "admin")
+  Session <- NewBasexClient(user = "Test", password = "testBaseX")
 
   SetIntercept(Session, FALSE)
   expect_named(Command(Session, "Info"))
@@ -43,7 +43,7 @@ test_that("Session, Database and QueryObjects are created and can be used", {
 
 test_that("Full Query", {
   skip_unless_socket_available()
-  Session <- NewBasexClient(user = "admin", password = "admin")
+  Session <- NewBasexClient(user = "Test", password = "testBaseX")
 
   Query_6 <- Query(Session, "collection('/TestDB/Test.xml')")
   fullResult <- Full(Query_6)
@@ -62,7 +62,7 @@ test_that("Full Query", {
 
 test_that("More and iterate", {
   skip_unless_socket_available()
-  Session <- NewBasexClient(user = "admin", password = "admin")
+  Session <- NewBasexClient(user = "Test", password = "testBaseX")
 
   Query_iter <- Query(Session, "collection('/TestDB/Test.xml')")
   Zero_results <- Query(Session, "collection('TestDB/Test')")
@@ -87,7 +87,7 @@ test_that("More and iterate", {
 
 test_that("Query is executed and Updating() is false", {
   skip_unless_socket_available()
-  Session <- BasexClient$new("localhost", 1984L, username = "admin", password = "admin")
+  Session <- BasexClient$new("localhost", 1984L, username = "Test", password = "testBaseX")
 
   Query_1 <- Query(Session, "for $i in 1 to 2 return <xml>Text { $i }</xml>")
   expect_equal(Session$get_success(), TRUE)
@@ -113,7 +113,7 @@ test_that("Query is executed and Updating() is false", {
 
 test_that("Binding function binds variables", {
   skip_unless_socket_available()
-  Session <- BasexClient$new("localhost", 1984L, username = "admin", password = "admin")
+  Session <- BasexClient$new("localhost", 1984L, username = "Test", password = "testBaseX")
 
   Query_1 <- Query(Session,
                    "declare variable $name external; for $i in 1 to 2 return element { $name } { $i }")
@@ -151,7 +151,7 @@ test_that("Binding function binds variables", {
 
 test_that("Context function works", {
   skip_unless_socket_available()
-  Session <- BasexClient$new("localhost", 1984L, username = "admin", password = "admin")
+  Session <- BasexClient$new("localhost", 1984L, username = "Test", password = "testBaseX")
 
   ctxt_query <- Query(Session, "for $t in .//text() return string-length($t)")
   ctxt_txt   <- paste0("<xml>", "<txt>Hi</txt>", "<txt>World</txt>", "</xml>")
@@ -165,13 +165,14 @@ test_that("Context function works", {
 
 test_that("Binary content is handled correctly", {
   skip_unless_socket_available()
-  Session <- BasexClient$new("localhost", 1984L, username = "admin", password = "admin")
+  Session <- BasexClient$new("localhost", 1984L, username = "Test", password = "testBaseX")
 
   Command(Session, "Check TestDB")
   bais <- as.raw(c(252, 253 ,254, 255, 255, 254, 255, 000, 255, 252, 253 ,254, 255, 255, 254, 255, 000, 255))
-  Store(Session, "test.bin", bais)
+  putBinary(Session, "test.bin", bais)
 
-  baos <- Command(Session, "retrieve test.bin")
+  # baos <- Command(Session, "retrieve test.bin")
+  baos <- Command(Session, "binary get test.bin")
   expect_equal(baos$result, as.raw(c(252, 253 ,254, 255, 255, 254, 255, 000, 255, 252, 253 ,254, 255, 255, 254, 255, 000, 255)))
   # Cleanup
   Command(Session, "Close")
@@ -181,7 +182,7 @@ test_that("Binary content is handled correctly", {
 test_that("Add and Add/Replace is handled", {
   skip_unless_socket_available()
   skip_if_offline()
-  Session <- BasexClient$new("localhost", 1984L, username = "admin", password = "admin")
+  Session <- BasexClient$new("localhost", 1984L, username = "Test", password = "testBaseX")
 
   Command(Session, "Check TestDB")
   SetIntercept(Session, TRUE)
@@ -206,7 +207,7 @@ test_that("Add and Add/Replace is handled", {
 
   # Add/Replace
   Rep <- "<x>Hi Friends!</x>"
-  Replace(Session, Path, Rep)
+  put(Session, Path, Rep)
 
   # Check results
   result <- Session$Command("xquery db:list('TestDB')")[[1]]

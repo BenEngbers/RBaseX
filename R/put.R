@@ -1,8 +1,8 @@
-#' Replace
+#' Put
 #'
 #' @param session BasexClient instance-ID
 #' @param path Path where to store the data
-#' @param input Replacement
+#' @param input Add or replacement
 #'
 #' @return A list with two items
 #'     \itemize{
@@ -10,10 +10,7 @@
 #'       \item {success} {A boolean, indicating if the command was completed successfull}
 #'     }
 #'
-#' @description Replaces a resource with the specified input.
-#'
-#' @details The 'Replace' command is deprecated and has been renamed to 'Put'.
-#'     'Replace' is being kept as convenience.
+#' @description Adds or replaces a resource with the specified input.
 #'
 #' @details The input can be a UTF-8 encoded XML document, a binary resource, or any other data (such as JSON or CSV)
 #'     that can be successfully converted to a resource by the server.
@@ -21,10 +18,10 @@
 #'
 #' @examples
 #' \dontrun{
-#' Replace(Session, "test", "<xml>Create test</xml>")
+#' put(Session, "test", "<xml>Create test</xml>")
 #' }
 #'
 #' @export
-Replace <- function(session, path, input) {
-  return(session$Replace(path, input))
+put <- function(session, path, input) {
+  return(session$put(path, input))
 }

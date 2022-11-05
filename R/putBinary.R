@@ -1,4 +1,4 @@
-#' Store
+#' putBinary
 #'
 #' @param session BasexClient instance-ID
 #' @param path Path where to store the data
@@ -10,10 +10,7 @@
 #'       \item {success} {A boolean, indicating if the command was completed successfull}
 #'     }
 #'
-#' @description Stores a binary resource in the opened database.
-#'
-#' @details The 'Store' command is deprecated and has been renamed to 'putBinary'.
-#'     'Store' is being kept as convenience.
+#' @description Store or replace a binary resource in the opened database.
 #'
 #' @details Use the database-command \emph{retrieve} to retrieve the resource.
 #'     The input can be a UTF-8 encoded XML document, a binary resource, or any other data (such as JSON or CSV)
@@ -27,14 +24,14 @@
 #' testBin <- Execute(Session, "Check BinBase")
 #' bais <- raw()
 #' for (b in 252:255) bais <- c(bais, c(b)) %>% as.raw()
-#' test <- Store(Session, "test.bin", bais)
+#' test <- putBinary(Session, "test.bin", bais)
 #' print(test$success)
-#' baos <- Execute(Session, "binary get test.bin")
+#' baos <- Execute(Session, "BINARY GET test.bin")
 #' print(bais)
 #' print(baos$result)
 #' }
 #'
 #' @export
-Store <- function(session, path, input) {
-  return(session$Store(path, input))
+putBinary <- function(session, path, input) {
+  return(session$putBinary(path, input))
 }

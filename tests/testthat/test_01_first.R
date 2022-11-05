@@ -2,10 +2,10 @@ test_that("Credentials are accepted and a db is created", {
   skip_unless_socket_available()
 
   expect_error(SocketClass$new(host, port = 1984L, "admin", "denied"))
-  expect_type(SocketClass$new("localhost", port = 1984L, "admin", "admin"), "environment")
+  expect_type(SocketClass$new("localhost", port = 1984L, "Test", "testBaseX"), "environment")
 
   # Create and populate a Test-database
-  Session <- BasexClient$new("localhost", 1984L, username = "admin", password = "admin")
+  Session <- BasexClient$new("localhost", 1984L, username = "Test", password = "testBaseX")
 
   Session$set_intercept(TRUE)$Command("drop DB TestDB")
   Session$set_success(FALSE)  # Initialize success

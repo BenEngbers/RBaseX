@@ -3,6 +3,8 @@ BaseX R Client
 
 ## Revision history
 
+Version 1.1.2: 2022-11-04
+* Changes in the client protocol made it necessary to add put.R and putBinary.R as replacement for Store.R and Replace.R. In future versions, these programs will be removed.
 Version 1.1.1: 2022-03-10
 * Bug-fixes
 * Added tests

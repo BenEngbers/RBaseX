@@ -111,10 +111,10 @@ BasexClient <- R6Class(
       invisible(self)
     },
 
-    #' @description Replace resource, adressed by path
+    #' @description Add or replace resource, adressed by path
     #' @param path Path
     #' @param input File, directory or XML-string
-    Replace = function(path, input) {
+    put = function(path, input) {
       exec <- c(as.raw(0x0C), addVoid(path), addVoid(input_to_raw(input)))
       response <- private$sock$handShake(exec) %>% split_Response()
 
@@ -126,11 +126,28 @@ BasexClient <- R6Class(
       invisible(self)
     },
 
+    #' @description Replace resource, adressed by path.
+    #' This function is deprecated and has been replaced by /'put/'.
+    #' @param path Path
+    #' @param input File, directory or XML-string
+    Replace = function(path, input) {
+      self$put(path, input)
+      # exec <- c(as.raw(0x0C), addVoid(path), addVoid(input_to_raw(input)))
+      # response <- private$sock$handShake(exec) %>% split_Response()
+      #
+      # response[[1]] %<>% strsplit("\n")
+      # response[[1]][[1]] %<>% clean_Response()
+      #
+      # names(response) <- c("info", "success")
+      # return(private$handle_response(response))
+      invisible(self)
+    },
+
     #' @description Store binary content
     #' @details Binary content can be retrieved by executing a retrieve-command
     #' @param path Path
     #' @param input File, directory or XML-string
-    Store = function(path, input) {
+    putBinary = function(path, input) {
       input %<>% add_FF()
 
       exec <- c(as.raw(0x0D), addVoid(path), addVoid(input_to_raw(input)))
@@ -141,6 +158,16 @@ BasexClient <- R6Class(
 
       names(response) <- c("info", "success")
       return(private$handle_response(response))
+      invisible(self)
+    },
+
+    #' @description Store binary content
+    #' @details Binary content can be retrieved by executing a retrieve-command.
+    #' This function is deprecated and has been replaced by /'putBinary/'.
+    #' @param path Path
+    #' @param input File, directory or XML-string
+    Store = function(path, input) {
+      self$putBinary(path, input)
       invisible(self)
     },
 

@@ -52,32 +52,6 @@ split_Response <- function(response) {
   return(resp_list)
 }
 
-# split_Response <- function(response) {
-#   error <- (length(which(response == as.raw(c("01")))) > 0)
-#   if (error) {            # An error occurred, indicated by a trailing 01-byte in response
-#     resp_list <- responseToChar(response)
-#   } else {
-#     if (is.Binary(response)) {
-#       browser()
-#       resp_list <- list()
-#       Zero  <- which(0 == response)
-#       Z_i <- 0
-#       for (i in 1:length(Zero)) {
-#         e <- Zero[i]
-#         F_cnt <- 0; F_i <- e - 1              # FF0 is treated different from F0
-#         while (response[F_i] == 0xFF) {F_cnt <- F_cnt + 1; F_i <- F_i - 1}
-#         if (F_cnt %% 2 == 0) break
-#       }
-#       resp_list[[1]] <- strip_FF(response[1:(e -1)])
-#       resp_list[[2]] <- response[(e+1):(length(response) -2)] %>% rawToChar()
-#       resp_list[[3]] <- TRUE
-#     } else {                                  # tail is \00
-#       resp_list <- responseToChar(response)
-#     }
-#   }
-#   return(resp_list)
-# }
-#
 responseToChar <- function(response) {
   if (is.PLATFORM("Windows")) response %<>% strip_CR()
   resp_list <- SplitRaw(response, c("00"))
